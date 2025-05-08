@@ -15,15 +15,18 @@ function getErrorMessage(err: unknown): string {
   return String(err);
 }
 
+function extractSlug(pathname: string) {
+  // /api/github/pages/[slug] => slug
+  const parts = pathname.split("/");
+  return parts[parts.length - 1];
+}
+
 // GET: Fetch file content
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest) {
   try {
     const token = await getGitHubToken();
     await assertAllowedUser(token);
-    const slug = params.slug;
+    const slug = extractSlug(request.nextUrl.pathname);
     const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/content/pages/${slug}.md`;
     const res = await fetch(apiUrl, {
       headers: { Authorization: `Bearer ${token}` },
@@ -48,15 +51,12 @@ export async function GET(
 }
 
 // PUT: Update file content
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function PUT(request: NextRequest) {
   try {
     const token = await getGitHubToken();
     await assertAllowedUser(token);
-    const slug = params.slug;
-    const { content, sha } = await req.json();
+    const slug = extractSlug(request.nextUrl.pathname);
+    const { content, sha } = await request.json();
     if (!content || !sha) {
       return NextResponse.json(
         { error: "Missing content or sha" },
