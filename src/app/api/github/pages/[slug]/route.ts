@@ -21,16 +21,18 @@ function extractSlug(pathname: string) {
   return parts[parts.length - 1];
 }
 
-// GET: Fetch file content
+// GET: Fetch file content (public access allowed)
 export async function GET(request: NextRequest) {
   try {
-    const token = await getGitHubToken();
-    await assertAllowedUser(token);
     const slug = extractSlug(request.nextUrl.pathname);
     const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/content/pages/${slug}.md`;
-    const res = await fetch(apiUrl, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    let token: string | undefined = undefined;
+    try {
+      token = await getGitHubToken();
+    } catch {}
+    const headers: Record<string, string> = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    const res = await fetch(apiUrl, { headers });
     if (!res.ok) {
       throw new Error(`GitHub API error: ${res.status}`);
     }
@@ -40,17 +42,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ name: file.name, sha: file.sha, content });
   } catch (err: unknown) {
     const message = getErrorMessage(err);
-    if (message === "Missing GitHub token") {
-      return NextResponse.json({ error: message }, { status: 401 });
-    }
-    if (message === "User not allowed") {
-      return NextResponse.json({ error: message }, { status: 403 });
-    }
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-// PUT: Update file content
+// PUT: Update file content (admin only)
 export async function PUT(request: NextRequest) {
   try {
     const token = await getGitHubToken();
