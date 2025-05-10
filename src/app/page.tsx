@@ -1,40 +1,37 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import matter from "gray-matter";
-
-async function fetchHomeContent() {
-  // This fetches from the local API, which proxies to GitHub in production
-  const res = await fetch(
-    `${
-      process.env.NEXT_PUBLIC_BASE_PATH || ""
-    }/.netlify/functions/github-pages-read?slug=home`,
-    {
-      cache: "no-store",
-    }
-  );
-  if (!res.ok) throw new Error("Failed to load home content");
-  const data = await res.json();
-  return data.content;
-}
 
 type Frontmatter = {
   title?: string;
   description?: string;
 };
 
-export default async function Home() {
-  let content = "";
-  let frontmatter: Frontmatter = {};
-  try {
-    const raw = await fetchHomeContent();
-    const parsed = matter(raw);
-    content = parsed.content;
-    frontmatter = parsed.data as Frontmatter;
-  } catch {
-    return (
-      <div className="p-8 text-red-600">Failed to load homepage content.</div>
-    );
-  }
+export default function Home() {
+  const [content, setContent] = useState("");
+  const [frontmatter, setFrontmatter] = useState<Frontmatter>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("/.netlify/functions/github-pages-read?slug=home")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.content) throw new Error("No content");
+        const parsed = matter(data.content);
+        setContent(parsed.content);
+        setFrontmatter(parsed.data as Frontmatter);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to load homepage content.");
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div className="p-8">Loading...</div>;
+  if (error) return <div className="p-8 text-red-600">{error}</div>;
 
   return (
     <main className="max-w-3xl mx-auto p-8">

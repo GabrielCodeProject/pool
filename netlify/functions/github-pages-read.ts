@@ -12,7 +12,7 @@ const handler: Handler = async (event) => {
         body: JSON.stringify({ error: "Missing slug parameter" }),
       };
     }
-    const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/content/pages/${slug}.md`;
+    const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/content/pages/${slug}.md`;
     const headers: Record<string, string> = {};
     const token = process.env.GITHUB_TOKEN;
     if (token) headers["Authorization"] = `Bearer ${token}`;
