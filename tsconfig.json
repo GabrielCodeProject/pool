@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -24,5 +24,11 @@
     "types": ["react", "react-dom"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "netlify/functions",
+    "src/app/api/auth/",
+    "src/app/api/auth/callback",
+    "src/app/api/auth/login"
+  ]
 }

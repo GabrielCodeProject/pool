@@ -5,7 +5,9 @@ import matter from "gray-matter";
 async function fetchHomeContent() {
   // This fetches from the local API, which proxies to GitHub in production
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/api/github/pages/home`,
+    `${
+      process.env.NEXT_PUBLIC_BASE_PATH || ""
+    }/.netlify/functions/github-pages-read?slug=home`,
     {
       cache: "no-store",
     }

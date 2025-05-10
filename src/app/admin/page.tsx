@@ -16,11 +16,13 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [adminSecret, setAdminSecret] = useState<string>("");
+  const [showSecretPrompt, setShowSecretPrompt] = useState(false);
 
   // Fetch file list
   useEffect(() => {
     setLoading(true);
-    fetch("/api/github/pages")
+    fetch("/.netlify/functions/github-pages-list")
       .then((res) => res.json())
       .then((data) => {
         setFiles(data.files || []);
@@ -38,7 +40,7 @@ export default function AdminPage() {
     setLoading(true);
     setError(null);
     setSuccess(false);
-    fetch(`/api/github/pages/${file.slug}`)
+    fetch(`/.netlify/functions/github-pages-read?slug=${file.slug}`)
       .then((res) => res.json())
       .then((data) => {
         setContent(data.content || "");
@@ -54,21 +56,44 @@ export default function AdminPage() {
   // Save file content
   const saveFile = async () => {
     if (!selected) return;
+    if (!adminSecret) {
+      setShowSecretPrompt(true);
+      return;
+    }
     setSaving(true);
     setError(null);
     setSuccess(false);
-    const res = await fetch(`/api/github/pages/${selected.slug}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content, sha }),
-    });
+    const res = await fetch(
+      `/.netlify/functions/github-pages-update?slug=${selected.slug}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-secret": adminSecret,
+        },
+        body: JSON.stringify({ content, sha }),
+      }
+    );
     if (res.ok) {
       setSuccess(true);
     } else {
       const data = await res.json();
       setError(data.error || "Failed to save");
+      if (data.error === "Unauthorized") {
+        setShowSecretPrompt(true);
+      }
     }
     setSaving(false);
+  };
+
+  // Handle admin secret prompt
+  const handleSecretSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowSecretPrompt(false);
+    setError(null);
+    setSuccess(false);
+    // Try saving again after setting secret
+    saveFile();
   };
 
   return (
@@ -77,6 +102,29 @@ export default function AdminPage() {
       {loading && <div>Loading...</div>}
       {error && <div className="text-red-500 mb-2">{error}</div>}
       {success && <div className="text-green-600 mb-2">Saved!</div>}
+      {showSecretPrompt && (
+        <form
+          className="mb-4 p-4 border rounded bg-gray-50 dark:bg-gray-800"
+          onSubmit={handleSecretSubmit}
+        >
+          <label className="block mb-2 font-semibold">
+            Enter Admin Secret:
+            <input
+              type="password"
+              className="block w-full mt-1 p-2 border rounded"
+              value={adminSecret}
+              onChange={(e) => setAdminSecret(e.target.value)}
+              autoFocus
+            />
+          </label>
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-1 rounded mt-2"
+          >
+            Submit
+          </button>
+        </form>
+      )}
       <div className="flex gap-8">
         {/* File list */}
         <div className="w-1/4 border-r pr-4">
@@ -122,7 +170,6 @@ export default function AdminPage() {
                 />
                 <div className="w-full h-80 p-2 border rounded overflow-auto bg-white dark:bg-gray-900">
                   <div className="prose prose-sm max-w-none dark:prose-invert">
-                    {/* Real markdown preview */}
                     <ReactMarkdown>{content}</ReactMarkdown>
                   </div>
                 </div>
