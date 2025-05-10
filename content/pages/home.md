@@ -1,6 +1,7 @@
 ---
 title: "Home"
 description: "Welcome to our site! Discover our promotions, who we are, and the services we offer."
+---
 
 <!--
   This section is for your homepage carousel. In a real app, you might render images or cards here.

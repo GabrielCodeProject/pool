@@ -1,6 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import matter from "gray-matter";
+
+type Frontmatter = {
+  title?: string;
+  description?: string;
+};
 
 interface FileEntry {
   name: string;
@@ -10,7 +16,8 @@ interface FileEntry {
 export default function AdminPage() {
   const [files, setFiles] = useState<FileEntry[]>([]);
   const [selected, setSelected] = useState<FileEntry | null>(null);
-  const [content, setContent] = useState("");
+  const [body, setBody] = useState("");
+  const [frontmatter, setFrontmatter] = useState<Frontmatter>({});
   const [sha, setSha] = useState("");
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -43,7 +50,10 @@ export default function AdminPage() {
     fetch(`/.netlify/functions/github-pages-read?slug=${file.slug}`)
       .then((res) => res.json())
       .then((data) => {
-        setContent(data.content || "");
+        if (!data.content) throw new Error("No content");
+        const parsed = matter(data.content);
+        setBody(parsed.content || "");
+        setFrontmatter(parsed.data as Frontmatter);
         setSha(data.sha || "");
         setLoading(false);
       })
@@ -63,6 +73,16 @@ export default function AdminPage() {
     setSaving(true);
     setError(null);
     setSuccess(false);
+    // Compose markdown with YAML frontmatter
+    let markdown = `---\n`;
+    if (frontmatter.title)
+      markdown += `title: "${frontmatter.title.replace(/"/g, '"')}"\n`;
+    if (frontmatter.description)
+      markdown += `description: "${frontmatter.description.replace(
+        /"/g,
+        '"'
+      )}"\n`;
+    markdown += `---\n\n${body}`;
     const res = await fetch(
       `/.netlify/functions/github-pages-update?slug=${selected.slug}`,
       {
@@ -71,7 +91,7 @@ export default function AdminPage() {
           "Content-Type": "application/json",
           "x-admin-secret": adminSecret,
         },
-        body: JSON.stringify({ content, sha }),
+        body: JSON.stringify({ content: markdown, sha }),
       }
     );
     if (res.ok) {
@@ -151,26 +171,57 @@ export default function AdminPage() {
         <div className="flex-1">
           {selected ? (
             <>
-              <div className="mb-2 flex justify-between items-center">
-                <h2 className="font-semibold">Editing: {selected.name}</h2>
+              <div className="mb-2 flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
+                <div className="flex flex-col md:flex-row md:items-center gap-2">
+                  <label className="font-semibold mr-2">
+                    Title:
+                    <input
+                      type="text"
+                      className="ml-2 p-1 border rounded"
+                      value={frontmatter.title || ""}
+                      onChange={(e) =>
+                        setFrontmatter((fm) => ({
+                          ...fm,
+                          title: e.target.value,
+                        }))
+                      }
+                      disabled={loading || saving}
+                    />
+                  </label>
+                  <label className="font-semibold md:ml-4">
+                    Description:
+                    <input
+                      type="text"
+                      className="ml-2 p-1 border rounded w-64"
+                      value={frontmatter.description || ""}
+                      onChange={(e) =>
+                        setFrontmatter((fm) => ({
+                          ...fm,
+                          description: e.target.value,
+                        }))
+                      }
+                      disabled={loading || saving}
+                    />
+                  </label>
+                </div>
                 <button
-                  className="bg-blue-600 text-white px-4 py-1 rounded disabled:opacity-50"
+                  className="bg-blue-600 text-white px-4 py-1 rounded disabled:opacity-50 mt-2 md:mt-0"
                   onClick={saveFile}
                   disabled={saving}
                 >
                   {saving ? "Saving..." : "Save"}
                 </button>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <textarea
                   className="w-full h-80 p-2 border rounded font-mono"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
                   disabled={loading || saving}
                 />
                 <div className="w-full h-80 p-2 border rounded overflow-auto bg-white dark:bg-gray-900">
                   <div className="prose prose-sm max-w-none dark:prose-invert">
-                    <ReactMarkdown>{content}</ReactMarkdown>
+                    <ReactMarkdown>{body}</ReactMarkdown>
                   </div>
                 </div>
               </div>
