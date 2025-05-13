@@ -97,15 +97,13 @@ export default function AdminPage() {
     setSaving(true);
     setError(null);
     setSuccess(false);
-    // Compose markdown with YAML frontmatter
+    // Compose markdown with YAML frontmatter (include all keys)
     let markdown = `---\n`;
-    if (frontmatter.title)
-      markdown += `title: "${frontmatter.title.replace(/"/g, '"')}"\n`;
-    if (frontmatter.description)
-      markdown += `description: "${frontmatter.description.replace(
-        /"/g,
-        '"'
-      )}"\n`;
+    for (const [key, value] of Object.entries(frontmatter)) {
+      if (value !== undefined && value !== "") {
+        markdown += `${key}: \"${String(value).replace(/\"/g, '\"')}\"\n`;
+      }
+    }
     markdown += `---\n\n${body}`;
     const res = await fetch(
       `${API_BASE}/github-pages-update?slug=${selected.slug}`,
