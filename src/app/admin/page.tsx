@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import matter from "gray-matter";
+import { API_BASE } from "@/config/apiBase";
 
 type Frontmatter = {
   title?: string;
@@ -29,7 +30,7 @@ export default function AdminPage() {
   // Fetch file list
   useEffect(() => {
     setLoading(true);
-    fetch(`${process.env.API_BASE}/github-pages-list`)
+    fetch(`${API_BASE}/github-pages-list`)
       .then((res) => res.json())
       .then((data) => {
         setFiles(data.files || []);
@@ -47,7 +48,7 @@ export default function AdminPage() {
     setLoading(true);
     setError(null);
     setSuccess(false);
-    fetch(`${process.env.API_BASE}/github-pages-read?slug=${file.slug}`)
+    fetch(`${API_BASE}/github-pages-read?slug=${file.slug}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.content) throw new Error("No content");
@@ -84,7 +85,7 @@ export default function AdminPage() {
       )}"\n`;
     markdown += `---\n\n${body}`;
     const res = await fetch(
-      `${process.env.API_BASE}/github-pages-update?slug=${selected.slug}`,
+      `${API_BASE}/github-pages-update?slug=${selected.slug}`,
       {
         method: "PUT",
         headers: {

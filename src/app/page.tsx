@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import matter from "gray-matter";
+import { API_BASE } from "@/config/apiBase";
 
 type Frontmatter = {
   title?: string;
@@ -15,7 +16,7 @@ export default function Home() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`${process.env.API_BASE}/github-pages-read?slug=home`)
+    fetch(`${API_BASE}/github-pages-read?slug=home`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.content) throw new Error("No content");
