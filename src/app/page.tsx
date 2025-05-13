@@ -3,6 +3,11 @@ import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import matter from "gray-matter";
 import { API_BASE } from "@/config/apiBase";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
+import { TypographyH1, TypographyP } from "@/components/ui/typography";
 
 type Frontmatter = {
   title?: string;
@@ -31,20 +36,53 @@ export default function Home() {
       });
   }, []);
 
-  if (loading) return <div className="p-8">Loading...</div>;
-  if (error) return <div className="p-8 text-red-600">{error}</div>;
+  if (loading)
+    return (
+      <main className="max-w-3xl mx-auto p-8">
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-10 w-1/2 mb-2" />
+            <Skeleton className="h-6 w-2/3 mb-4" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-6 w-full mb-2" />
+            <Skeleton className="h-6 w-5/6 mb-2" />
+            <Skeleton className="h-6 w-4/6 mb-2" />
+            <Skeleton className="h-6 w-3/6" />
+          </CardContent>
+        </Card>
+      </main>
+    );
+  if (error)
+    return (
+      <main className="max-w-3xl mx-auto p-8">
+        <Alert variant="destructive">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </main>
+    );
 
   return (
     <main className="max-w-3xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-4">{frontmatter.title || "Home"}</h1>
-      {frontmatter.description && (
-        <p className="mb-6 text-lg text-gray-600 dark:text-gray-300">
-          {frontmatter.description}
-        </p>
-      )}
-      <article className="prose prose-lg dark:prose-invert">
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </article>
+      <Card>
+        <CardHeader>
+          <TypographyH1 className="mb-2">
+            {frontmatter.title || "Home"}
+          </TypographyH1>
+          {frontmatter.description && (
+            <TypographyP className="mb-4 text-gray-600 dark:text-gray-300">
+              {frontmatter.description}
+            </TypographyP>
+          )}
+        </CardHeader>
+        <Separator />
+        <CardContent>
+          <article className="prose prose-lg dark:prose-invert max-w-none">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </article>
+        </CardContent>
+      </Card>
     </main>
   );
 }
