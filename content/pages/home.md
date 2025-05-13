@@ -4,6 +4,7 @@ description: "Welcome to Piscine Azur"
 ---
 
 
+
 <!--
   This section is for your homepage carousel. In a real app, you might render images or cards here.
   For markdown, you can list promotions or use images. Replace with your real promotions!
