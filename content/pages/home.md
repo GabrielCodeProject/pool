@@ -9,10 +9,6 @@ promo_3_image: "/images/uploads/promo3.jpg"
 promo_3_text: "Free Consultation for New Clients!"
 ---
 
-![Alt text promo 1](../images/uploads/fitnessmodel.jpeg)
-![Alt text promo 2](../images/uploads/promotion.jpeg)
-![Alt text promo 3](../images/uploads/runningman3.jpeg)
-
 # 👥 Who We Are
 
 We are a passionate team dedicated to delivering the best solutions for our clients. Our mission is to provide high-quality services with a personal touch.

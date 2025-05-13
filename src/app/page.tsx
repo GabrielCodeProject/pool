@@ -20,6 +20,12 @@ import Image from "next/image";
 type Frontmatter = {
   title?: string;
   description?: string;
+  promo_1_image?: string;
+  promo_1_text?: string;
+  promo_2_image?: string;
+  promo_2_text?: string;
+  promo_3_image?: string;
+  promo_3_text?: string;
 };
 
 export default function Home() {
@@ -36,6 +42,7 @@ export default function Home() {
         const parsed = matter(data.content);
         setContent(parsed.content);
         setFrontmatter(parsed.data as Frontmatter);
+        console.log("frontmatter", parsed.data);
         setLoading(false);
       })
       .catch(() => {
@@ -44,43 +51,22 @@ export default function Home() {
       });
   }, []);
 
-  // Helper to extract promotion blocks from markdown
-  function extractPromotions(md: string) {
-    // Split by --- (horizontal rule)
-    const blocks = md.split(/\n---+\n/);
-    // Promotion blocks are those that start with an image and have bold text
-    return blocks
-      .map((block) => {
-        const imgMatch = block.match(/!\[[^\]]*\]\(([^)]+)\)/);
-        const boldMatch = block.match(/\*\*([^*]+)\*\*/);
-        if (imgMatch && boldMatch) {
-          return {
-            image: imgMatch[1],
-            text: boldMatch[1],
-          };
-        }
-        return null;
-      })
-      .filter(Boolean);
-  }
-
-  const promotions = extractPromotions(content) as {
-    image: string;
-    text: string;
-  }[];
-  // Remove promotion blocks from markdown for the rest of the content
-  function removePromotions(md: string) {
-    return md
-      .split(/\n---+\n/)
-      .filter(
-        (block) =>
-          !block.match(/!\[[^\]]*\]\(([^)]+)\)/) ||
-          !block.match(/\*\*([^*]+)\*\*/)
-      )
-      .join("\n\n---\n\n");
-  }
-  const mainContent = promotions.length ? removePromotions(content) : content;
-
+  // Build promos array from frontmatter
+  const promos = [
+    {
+      image: frontmatter.promo_1_image,
+      text: frontmatter.promo_1_text,
+    },
+    {
+      image: frontmatter.promo_2_image,
+      text: frontmatter.promo_2_text,
+    },
+    {
+      image: frontmatter.promo_3_image,
+      text: frontmatter.promo_3_text,
+    },
+  ].filter((p) => p.image && p.text);
+  console.log(promos);
   if (loading)
     return (
       <main className="max-w-3xl mx-auto p-8">
@@ -123,18 +109,18 @@ export default function Home() {
         </CardHeader>
         <Separator />
         <CardContent>
-          {promotions.length > 0 && (
+          {promos.length > 0 && (
             <div className="mb-8">
               <Carousel className="w-full max-w-2xl mx-auto">
                 <CarouselContent>
-                  {promotions.map((promo, idx) => (
+                  {promos.map((promo, idx) => (
                     <CarouselItem
                       key={idx}
                       className="flex flex-col items-center justify-center"
                     >
                       <Image
-                        src={promo.image}
-                        alt={promo.text}
+                        src={promo.image as string}
+                        alt={promo.text as string}
                         width={600}
                         height={200}
                         className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
@@ -151,7 +137,7 @@ export default function Home() {
             </div>
           )}
           <article className="prose prose-lg dark:prose-invert max-w-none">
-            <ReactMarkdown>{mainContent}</ReactMarkdown>
+            <ReactMarkdown>{content}</ReactMarkdown>
           </article>
         </CardContent>
       </Card>

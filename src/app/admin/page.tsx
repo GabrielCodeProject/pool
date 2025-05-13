@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
-import ReactMarkdown from "react-markdown";
+import React, { useEffect, useState } from "react";
 import matter from "gray-matter";
 import { API_BASE } from "@/config/apiBase";
 import Image from "next/image";
@@ -8,6 +7,12 @@ import Image from "next/image";
 type Frontmatter = {
   title?: string;
   description?: string;
+  promo_1_image?: string;
+  promo_1_text?: string;
+  promo_2_image?: string;
+  promo_2_text?: string;
+  promo_3_image?: string;
+  promo_3_text?: string;
 };
 
 interface FileEntry {
@@ -27,14 +32,12 @@ export default function AdminPage() {
   const [success, setSuccess] = useState(false);
   const [adminSecret, setAdminSecret] = useState<string>("");
   const [showSecretPrompt, setShowSecretPrompt] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   // Image upload state
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState("");
   const [uploadError, setUploadError] = useState("");
   const [selectedPromoSlot, setSelectedPromoSlot] = useState(1);
   const [allImages, setAllImages] = useState<string[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string>("");
 
   // Fetch file list
   useEffect(() => {
@@ -117,7 +120,6 @@ export default function AdminPage() {
     );
     if (res.ok) {
       setSuccess(true);
-      setSelectedImage("");
       setUploadedUrl("");
       setSelectedPromoSlot(1);
     } else {
@@ -204,47 +206,6 @@ export default function AdminPage() {
     setBody(newBody);
   };
 
-  // Insert selected image from dropdown into markdown at the selected promo slot
-  const insertSelectedImage = () => {
-    if (!selectedImage) return;
-    const md = `![Alt text promo ${selectedPromoSlot}](../images/uploads/${selectedImage})`;
-    const placeholder = `<!-- promo_image_${selectedPromoSlot} -->`;
-    const imageRegex = new RegExp(
-      `!\\[Alt text promo ${selectedPromoSlot}\\]\\([^)]*\\)`,
-      "g"
-    );
-    let newBody = body;
-    if (body.includes(placeholder)) {
-      newBody = body.replace(placeholder, md);
-    } else {
-      const matches = [...body.matchAll(imageRegex)];
-      if (matches.length > 0) {
-        const match = matches[0];
-        if (match) {
-          newBody =
-            body.slice(0, match.index) +
-            md +
-            body.slice(match.index + match[0].length);
-        }
-      } else {
-        newBody = body + "\n" + md;
-      }
-    }
-    setBody(newBody);
-  };
-
-  // Helper to get the current image URL for the selected promo slot
-  const getCurrentPromoImageUrl = () => {
-    const imageRegex = new RegExp(
-      `!\\[Alt text promo ${selectedPromoSlot}\\]\\(([^)]+)\\)`,
-      "i"
-    );
-    const match = body.match(imageRegex);
-    console.log(match);
-    return match ? match[1] : null;
-  };
-  const currentPromoImageUrl = getCurrentPromoImageUrl();
-
   return (
     <div className="max-w-4xl mx-auto p-8">
       <h1 className="text-2xl font-bold mb-6">Admin CMS</h1>
@@ -306,119 +267,7 @@ export default function AdminPage() {
           <div className="flex-1">
             {selected ? (
               <>
-                {/* Image upload UI */}
-                <div className="mb-4">
-                  {/* Select all images in uploads folder */}
-                  <div className="mb-2">
-                    <label className="font-semibold mr-2">
-                      Browse Uploaded Images:
-                    </label>
-                    <select
-                      value={selectedImage}
-                      onChange={(e) => setSelectedImage(e.target.value)}
-                      className="border rounded p-1"
-                    >
-                      <option value="">Select an image</option>
-                      {allImages.map((img) => (
-                        <option key={img} value={img}>
-                          {img}
-                        </option>
-                      ))}
-                    </select>
-                    {selectedImage && (
-                      <div className="mt-2 flex items-center gap-2">
-                        <Image
-                          src={`../images/uploads/${selectedImage}`}
-                          alt={selectedImage}
-                          width={48}
-                          height={48}
-                          className="h-12 rounded border"
-                        />
-                        <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-                          ../images/uploads/{selectedImage}
-                        </code>
-                        <button
-                          type="button"
-                          className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
-                          onClick={insertSelectedImage}
-                        >
-                          Insert Selected Image
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  {/* Promo slot select */}
-                  <div className="mb-2">
-                    <label className="font-semibold mr-2">Promo Slot:</label>
-                    <select
-                      value={selectedPromoSlot}
-                      onChange={(e) =>
-                        setSelectedPromoSlot(Number(e.target.value))
-                      }
-                      className="border rounded p-1"
-                      disabled={uploading || saving}
-                    >
-                      {[1, 2, 3].map((i) => (
-                        <option key={i} value={i}>
-                          Promo {i}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  {/* UI feedback for current promo slot */}
-                  <div className="mb-2">
-                    <span className="font-semibold">
-                      Currently selected promo slot:{" "}
-                    </span>
-                    <span className="text-blue-700">
-                      Promo {selectedPromoSlot}
-                    </span>
-                    {currentPromoImageUrl ? (
-                      <div className="mt-1 flex items-center gap-2">
-                        <span className="text-gray-600">Current image:</span>
-                        <Image
-                          src={currentPromoImageUrl}
-                          alt={`Promo ${selectedPromoSlot}`}
-                          width={48}
-                          height={48}
-                          className="h-12 rounded border"
-                        />
-                      </div>
-                    ) : (
-                      <div className="mt-1 text-gray-400">
-                        No image set for this slot.
-                      </div>
-                    )}
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    disabled={uploading || saving}
-                    className="mb-2"
-                  />
-                  {uploading && (
-                    <span className="text-blue-600 ml-2">Uploading...</span>
-                  )}
-                  {uploadError && (
-                    <span className="text-red-500 ml-2">{uploadError}</span>
-                  )}
-                  {uploadedUrl && (
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="text-green-600">Uploaded:</span>
-                      <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-                        {uploadedUrl}
-                      </code>
-                      <button
-                        type="button"
-                        className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
-                        onClick={insertImageMarkdown}
-                      >
-                        Insert Markdown
-                      </button>
-                    </div>
-                  )}
-                </div>
+                {/* Title and Description fields */}
                 <div className="mb-2 flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                     <label className="font-semibold mr-2">
@@ -460,19 +309,105 @@ export default function AdminPage() {
                     {saving ? "Saving..." : "Save"}
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                  <textarea
-                    className="w-full h-80 p-2 border rounded font-mono"
-                    value={body}
-                    onChange={(e) => setBody(e.target.value)}
-                    disabled={loading || saving}
-                    ref={textareaRef}
+                {/* Image upload UI */}
+                <div className="mb-4">
+                  {/* UI feedback for current promo slot */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading || saving}
+                    className="mb-2"
                   />
-                  <div className="w-full h-80 p-2 border rounded overflow-auto bg-white dark:bg-gray-900">
-                    <div className="prose prose-sm max-w-none dark:prose-invert">
-                      <ReactMarkdown>{body}</ReactMarkdown>
+                  {uploading && (
+                    <span className="text-blue-600 ml-2">Uploading...</span>
+                  )}
+                  {uploadError && (
+                    <span className="text-red-500 ml-2">{uploadError}</span>
+                  )}
+                  {uploadedUrl && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-green-600">Uploaded:</span>
+                      <code className="bg-gray-100 px-2 py-1 rounded text-xs">
+                        {uploadedUrl}
+                      </code>
+                      <button
+                        type="button"
+                        className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
+                        onClick={insertImageMarkdown}
+                      >
+                        Insert Markdown
+                      </button>
                     </div>
-                  </div>
+                  )}
+                </div>
+                {/* Promotion fields from frontmatter */}
+                <div className="mb-4">
+                  <h2 className="font-semibold mb-2">Promotions</h2>
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="mb-2 flex flex-col md:flex-row md:items-center gap-2"
+                    >
+                      <label className="font-semibold mr-2">
+                        Promo {i} Image:
+                      </label>
+                      <select
+                        value={
+                          (frontmatter as Record<string, string | undefined>)[
+                            `promo_${i}_image`
+                          ] || ""
+                        }
+                        onChange={(e) =>
+                          setFrontmatter((fm) => ({
+                            ...fm,
+                            [`promo_${i}_image`]: e.target.value,
+                          }))
+                        }
+                        className="border rounded p-1"
+                      >
+                        <option value="">Select an image</option>
+                        {allImages.map((img) => (
+                          <option key={img} value={`../images/uploads/${img}`}>
+                            {img}
+                          </option>
+                        ))}
+                      </select>
+                      {(frontmatter as Record<string, string | undefined>)[
+                        `promo_${i}_image`
+                      ] && (
+                        <Image
+                          src={
+                            (frontmatter as Record<string, string | undefined>)[
+                              `promo_${i}_image`
+                            ] as string
+                          }
+                          alt={`Promo ${i}`}
+                          width={48}
+                          height={48}
+                          className="h-12 rounded border"
+                        />
+                      )}
+                      <label className="font-semibold md:ml-4">
+                        Promo {i} Text:
+                      </label>
+                      <input
+                        type="text"
+                        className="p-1 border rounded w-64"
+                        value={
+                          (frontmatter as Record<string, string | undefined>)[
+                            `promo_${i}_text`
+                          ] || ""
+                        }
+                        onChange={(e) =>
+                          setFrontmatter((fm) => ({
+                            ...fm,
+                            [`promo_${i}_text`]: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                  ))}
                 </div>
               </>
             ) : (
