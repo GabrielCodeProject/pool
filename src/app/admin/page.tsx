@@ -31,6 +31,7 @@ export default function AdminPage() {
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState("");
   const [uploadError, setUploadError] = useState("");
+  const [selectedPromoSlot, setSelectedPromoSlot] = useState(1);
 
   // Fetch file list
   useEffect(() => {
@@ -157,19 +158,14 @@ export default function AdminPage() {
 
   // Insert image markdown at cursor
   const insertImageMarkdown = () => {
-    if (!uploadedUrl || !textareaRef.current) return;
+    if (!uploadedUrl) return;
     const md = `![Alt text](${uploadedUrl})`;
-    const textarea = textareaRef.current;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const before = body.slice(0, start);
-    const after = body.slice(end);
-    setBody(before + md + after);
-    // Move cursor after inserted markdown
-    setTimeout(() => {
-      textarea.focus();
-      textarea.selectionStart = textarea.selectionEnd = start + md.length;
-    }, 0);
+    const placeholder = `<!-- promo_image_${selectedPromoSlot} -->`;
+    if (body.includes(placeholder)) {
+      setBody(body.replace(placeholder, md));
+    } else {
+      setBody(body + "\n" + md);
+    }
   };
 
   return (
@@ -238,6 +234,24 @@ export default function AdminPage() {
                   <label className="block font-semibold mb-1">
                     Upload Image for Markdown:
                   </label>
+                  {/* Promo slot select */}
+                  <div className="mb-2">
+                    <label className="font-semibold mr-2">Promo Slot:</label>
+                    <select
+                      value={selectedPromoSlot}
+                      onChange={(e) =>
+                        setSelectedPromoSlot(Number(e.target.value))
+                      }
+                      className="border rounded p-1"
+                      disabled={uploading || saving}
+                    >
+                      {[1, 2, 3].map((i) => (
+                        <option key={i} value={i}>
+                          Promo {i}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <input
                     type="file"
                     accept="image/*"
