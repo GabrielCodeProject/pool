@@ -9,10 +9,10 @@ promo_3_image: "/images/uploads/promo3.jpg"
 promo_3_text: "Free Consultation for New Clients!"
 ---
 
-<!-- promo_image_1 -->
-<!-- promo_image_2 -->
+![Alt text promo 1](../images/uploads/fitnessmodel.jpeg)
+![Alt text promo 2](../images/uploads/promotion.jpeg)
 
-![Alt text](/images/uploads/runningman3.jpeg)
+![Alt text promo 3](../images/uploads/runningman3.jpeg)
 
 # 👥 Who We Are
 
