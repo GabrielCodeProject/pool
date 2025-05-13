@@ -29,7 +29,7 @@ export default function AdminPage() {
   // Fetch file list
   useEffect(() => {
     setLoading(true);
-    fetch("/.netlify/functions/github-pages-list")
+    fetch(`${process.env.API_BASE}/github-pages-list`)
       .then((res) => res.json())
       .then((data) => {
         setFiles(data.files || []);
@@ -47,7 +47,7 @@ export default function AdminPage() {
     setLoading(true);
     setError(null);
     setSuccess(false);
-    fetch(`/.netlify/functions/github-pages-read?slug=${file.slug}`)
+    fetch(`${process.env.API_BASE}/github-pages-read?slug=${file.slug}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.content) throw new Error("No content");
@@ -84,7 +84,7 @@ export default function AdminPage() {
       )}"\n`;
     markdown += `---\n\n${body}`;
     const res = await fetch(
-      `/.netlify/functions/github-pages-update?slug=${selected.slug}`,
+      `${process.env.API_BASE}/github-pages-update?slug=${selected.slug}`,
       {
         method: "PUT",
         headers: {
