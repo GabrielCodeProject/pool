@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import matter from "gray-matter";
 import { API_BASE } from "@/config/apiBase";
+import Image from "next/image";
 
 type Frontmatter = {
   title?: string;
@@ -32,6 +33,8 @@ export default function AdminPage() {
   const [uploadedUrl, setUploadedUrl] = useState("");
   const [uploadError, setUploadError] = useState("");
   const [selectedPromoSlot, setSelectedPromoSlot] = useState(1);
+  const [allImages, setAllImages] = useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string>("");
 
   // Fetch file list
   useEffect(() => {
@@ -50,6 +53,13 @@ export default function AdminPage() {
     if (!adminSecret) {
       setShowSecretPrompt(true);
     }
+  }, []);
+
+  // Fetch all images in uploads folder on mount
+  useEffect(() => {
+    fetch("/.netlify/functions/list-uploads")
+      .then((res) => res.json())
+      .then((files) => setAllImages(files || []));
   }, []);
 
   // Fetch file content
@@ -191,6 +201,35 @@ export default function AdminPage() {
     setBody(newBody);
   };
 
+  // Insert selected image from dropdown into markdown at the selected promo slot
+  const insertSelectedImage = () => {
+    if (!selectedImage) return;
+    const md = `![Alt text promo ${selectedPromoSlot}](../images/uploads/${selectedImage})`;
+    const placeholder = `<!-- promo_image_${selectedPromoSlot} -->`;
+    const imageRegex = new RegExp(
+      `!\\[Alt text promo ${selectedPromoSlot}\\]\\([^)]*\\)`,
+      "g"
+    );
+    let newBody = body;
+    if (body.includes(placeholder)) {
+      newBody = body.replace(placeholder, md);
+    } else {
+      const matches = [...body.matchAll(imageRegex)];
+      if (matches.length > 0) {
+        const match = matches[0];
+        if (match) {
+          newBody =
+            body.slice(0, match.index) +
+            md +
+            body.slice(match.index + match[0].length);
+        }
+      } else {
+        newBody = body + "\n" + md;
+      }
+    }
+    setBody(newBody);
+  };
+
   // Helper to get the current image URL for the selected promo slot
   const getCurrentPromoImageUrl = () => {
     const imageRegex = new RegExp(
@@ -198,6 +237,7 @@ export default function AdminPage() {
       "i"
     );
     const match = body.match(imageRegex);
+    console.log(match);
     return match ? match[1] : null;
   };
   const currentPromoImageUrl = getCurrentPromoImageUrl();
@@ -265,9 +305,45 @@ export default function AdminPage() {
               <>
                 {/* Image upload UI */}
                 <div className="mb-4">
-                  <label className="block font-semibold mb-1">
-                    Upload Image for Markdown:
-                  </label>
+                  {/* Select all images in uploads folder */}
+                  <div className="mb-2">
+                    <label className="font-semibold mr-2">
+                      Browse Uploaded Images:
+                    </label>
+                    <select
+                      value={selectedImage}
+                      onChange={(e) => setSelectedImage(e.target.value)}
+                      className="border rounded p-1"
+                    >
+                      <option value="">Select an image</option>
+                      {allImages.map((img) => (
+                        <option key={img} value={img}>
+                          {img}
+                        </option>
+                      ))}
+                    </select>
+                    {selectedImage && (
+                      <div className="mt-2 flex items-center gap-2">
+                        <Image
+                          src={`../images/uploads/${selectedImage}`}
+                          alt={selectedImage}
+                          width={48}
+                          height={48}
+                          className="h-12 rounded border"
+                        />
+                        <code className="bg-gray-100 px-2 py-1 rounded text-xs">
+                          ../images/uploads/{selectedImage}
+                        </code>
+                        <button
+                          type="button"
+                          className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
+                          onClick={insertSelectedImage}
+                        >
+                          Insert Selected Image
+                        </button>
+                      </div>
+                    )}
+                  </div>
                   {/* Promo slot select */}
                   <div className="mb-2">
                     <label className="font-semibold mr-2">Promo Slot:</label>
@@ -297,9 +373,11 @@ export default function AdminPage() {
                     {currentPromoImageUrl ? (
                       <div className="mt-1 flex items-center gap-2">
                         <span className="text-gray-600">Current image:</span>
-                        <img
+                        <Image
                           src={currentPromoImageUrl}
                           alt={`Promo ${selectedPromoSlot}`}
+                          width={48}
+                          height={48}
                           className="h-12 rounded border"
                         />
                       </div>

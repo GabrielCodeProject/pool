@@ -15,6 +15,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Image from "next/image";
 
 type Frontmatter = {
   title?: string;
@@ -131,9 +132,11 @@ export default function Home() {
                       key={idx}
                       className="flex flex-col items-center justify-center"
                     >
-                      <img
+                      <Image
                         src={promo.image}
                         alt={promo.text}
+                        width={600}
+                        height={200}
                         className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
                       />
                       <div className="text-xl font-bold text-center">
