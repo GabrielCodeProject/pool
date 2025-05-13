@@ -4,6 +4,7 @@ description: "Welcome to Piscine Azur"
 ---
 
 
+
 ![Alt text promo 1](../images/uploads/fitnessmodel.jpeg)
 ![Alt text promo 2](../images/uploads/promotion.jpeg)
 ![Alt text promo 3](../images/uploads/runningman3.jpeg)
