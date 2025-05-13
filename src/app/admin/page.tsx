@@ -45,6 +45,10 @@ export default function AdminPage() {
         setError("Failed to load files");
         setLoading(false);
       });
+    // Prompt for admin secret on load if not set
+    if (!adminSecret) {
+      setShowSecretPrompt(true);
+    }
   }, []);
 
   // Fetch file content
@@ -197,127 +201,134 @@ export default function AdminPage() {
           </button>
         </form>
       )}
-      <div className="flex gap-8">
-        {/* File list */}
-        <div className="w-1/4 border-r pr-4">
-          <h2 className="font-semibold mb-2">Files</h2>
-          <ul>
-            {files.map((file) => (
-              <li key={file.slug}>
-                <button
-                  className={`text-left w-full py-1 px-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    selected?.slug === file.slug
-                      ? "bg-gray-200 dark:bg-gray-700"
-                      : ""
-                  }`}
-                  onClick={() => loadFile(file)}
-                  disabled={loading}
-                >
-                  {file.name}
-                </button>
-              </li>
-            ))}
-          </ul>
+      {/* Block UI if secret not set */}
+      {!adminSecret ? (
+        <div className="text-gray-500">
+          Enter the admin secret to access the CMS.
         </div>
-        {/* Editor and preview */}
-        <div className="flex-1">
-          {selected ? (
-            <>
-              {/* Image upload UI */}
-              <div className="mb-4">
-                <label className="block font-semibold mb-1">
-                  Upload Image for Markdown:
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  disabled={uploading || saving}
-                  className="mb-2"
-                />
-                {uploading && (
-                  <span className="text-blue-600 ml-2">Uploading...</span>
-                )}
-                {uploadError && (
-                  <span className="text-red-500 ml-2">{uploadError}</span>
-                )}
-                {uploadedUrl && (
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="text-green-600">Uploaded:</span>
-                    <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-                      {uploadedUrl}
-                    </code>
-                    <button
-                      type="button"
-                      className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
-                      onClick={insertImageMarkdown}
-                    >
-                      Insert Markdown
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="mb-2 flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
-                <div className="flex flex-col md:flex-row md:items-center gap-2">
-                  <label className="font-semibold mr-2">
-                    Title:
-                    <input
-                      type="text"
-                      className="ml-2 p-1 border rounded"
-                      value={frontmatter.title || ""}
-                      onChange={(e) =>
-                        setFrontmatter((fm) => ({
-                          ...fm,
-                          title: e.target.value,
-                        }))
-                      }
-                      disabled={loading || saving}
-                    />
+      ) : (
+        <div className="flex gap-8">
+          {/* File list */}
+          <div className="w-1/4 border-r pr-4">
+            <h2 className="font-semibold mb-2">Files</h2>
+            <ul>
+              {files.map((file) => (
+                <li key={file.slug}>
+                  <button
+                    className={`text-left w-full py-1 px-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 ${
+                      selected?.slug === file.slug
+                        ? "bg-gray-200 dark:bg-gray-700"
+                        : ""
+                    }`}
+                    onClick={() => loadFile(file)}
+                    disabled={loading}
+                  >
+                    {file.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Editor and preview */}
+          <div className="flex-1">
+            {selected ? (
+              <>
+                {/* Image upload UI */}
+                <div className="mb-4">
+                  <label className="block font-semibold mb-1">
+                    Upload Image for Markdown:
                   </label>
-                  <label className="font-semibold md:ml-4">
-                    Description:
-                    <input
-                      type="text"
-                      className="ml-2 p-1 border rounded w-64"
-                      value={frontmatter.description || ""}
-                      onChange={(e) =>
-                        setFrontmatter((fm) => ({
-                          ...fm,
-                          description: e.target.value,
-                        }))
-                      }
-                      disabled={loading || saving}
-                    />
-                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading || saving}
+                    className="mb-2"
+                  />
+                  {uploading && (
+                    <span className="text-blue-600 ml-2">Uploading...</span>
+                  )}
+                  {uploadError && (
+                    <span className="text-red-500 ml-2">{uploadError}</span>
+                  )}
+                  {uploadedUrl && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-green-600">Uploaded:</span>
+                      <code className="bg-gray-100 px-2 py-1 rounded text-xs">
+                        {uploadedUrl}
+                      </code>
+                      <button
+                        type="button"
+                        className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
+                        onClick={insertImageMarkdown}
+                      >
+                        Insert Markdown
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <button
-                  className="bg-blue-600 text-white px-4 py-1 rounded disabled:opacity-50 mt-2 md:mt-0"
-                  onClick={saveFile}
-                  disabled={saving}
-                >
-                  {saving ? "Saving..." : "Save"}
-                </button>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                <textarea
-                  className="w-full h-80 p-2 border rounded font-mono"
-                  value={body}
-                  onChange={(e) => setBody(e.target.value)}
-                  disabled={loading || saving}
-                  ref={textareaRef}
-                />
-                <div className="w-full h-80 p-2 border rounded overflow-auto bg-white dark:bg-gray-900">
-                  <div className="prose prose-sm max-w-none dark:prose-invert">
-                    <ReactMarkdown>{body}</ReactMarkdown>
+                <div className="mb-2 flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2">
+                    <label className="font-semibold mr-2">
+                      Title:
+                      <input
+                        type="text"
+                        className="ml-2 p-1 border rounded"
+                        value={frontmatter.title || ""}
+                        onChange={(e) =>
+                          setFrontmatter((fm) => ({
+                            ...fm,
+                            title: e.target.value,
+                          }))
+                        }
+                        disabled={loading || saving}
+                      />
+                    </label>
+                    <label className="font-semibold md:ml-4">
+                      Description:
+                      <input
+                        type="text"
+                        className="ml-2 p-1 border rounded w-64"
+                        value={frontmatter.description || ""}
+                        onChange={(e) =>
+                          setFrontmatter((fm) => ({
+                            ...fm,
+                            description: e.target.value,
+                          }))
+                        }
+                        disabled={loading || saving}
+                      />
+                    </label>
+                  </div>
+                  <button
+                    className="bg-blue-600 text-white px-4 py-1 rounded disabled:opacity-50 mt-2 md:mt-0"
+                    onClick={saveFile}
+                    disabled={saving}
+                  >
+                    {saving ? "Saving..." : "Save"}
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <textarea
+                    className="w-full h-80 p-2 border rounded font-mono"
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
+                    disabled={loading || saving}
+                    ref={textareaRef}
+                  />
+                  <div className="w-full h-80 p-2 border rounded overflow-auto bg-white dark:bg-gray-900">
+                    <div className="prose prose-sm max-w-none dark:prose-invert">
+                      <ReactMarkdown>{body}</ReactMarkdown>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </>
-          ) : (
-            <div className="text-gray-500">Select a file to edit</div>
-          )}
+              </>
+            ) : (
+              <div className="text-gray-500">Select a file to edit</div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
