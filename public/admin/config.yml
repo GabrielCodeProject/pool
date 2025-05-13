@@ -15,3 +15,4 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Promo Image", name: "promo_image", widget: "image-select" }

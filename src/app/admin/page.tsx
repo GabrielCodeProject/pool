@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import matter from "gray-matter";
 import { API_BASE } from "@/config/apiBase";
@@ -26,6 +26,11 @@ export default function AdminPage() {
   const [success, setSuccess] = useState(false);
   const [adminSecret, setAdminSecret] = useState<string>("");
   const [showSecretPrompt, setShowSecretPrompt] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  // Image upload state
+  const [uploading, setUploading] = useState(false);
+  const [uploadedUrl, setUploadedUrl] = useState("");
+  const [uploadError, setUploadError] = useState("");
 
   // Fetch file list
   useEffect(() => {
@@ -117,6 +122,52 @@ export default function AdminPage() {
     saveFile();
   };
 
+  // Image upload handler
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError("");
+    setUploadedUrl("");
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/.netlify/functions/upload-image", {
+        method: "POST",
+        headers: {
+          "x-admin-secret": adminSecret,
+        },
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setUploadedUrl(data.url);
+      } else {
+        setUploadError(data.error || "Upload failed");
+      }
+    } catch {
+      setUploadError("Upload failed");
+    }
+    setUploading(false);
+  };
+
+  // Insert image markdown at cursor
+  const insertImageMarkdown = () => {
+    if (!uploadedUrl || !textareaRef.current) return;
+    const md = `![Alt text](${uploadedUrl})`;
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const before = body.slice(0, start);
+    const after = body.slice(end);
+    setBody(before + md + after);
+    // Move cursor after inserted markdown
+    setTimeout(() => {
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + md.length;
+    }, 0);
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-8">
       <h1 className="text-2xl font-bold mb-6">Admin CMS</h1>
@@ -172,6 +223,40 @@ export default function AdminPage() {
         <div className="flex-1">
           {selected ? (
             <>
+              {/* Image upload UI */}
+              <div className="mb-4">
+                <label className="block font-semibold mb-1">
+                  Upload Image for Markdown:
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={uploading || saving}
+                  className="mb-2"
+                />
+                {uploading && (
+                  <span className="text-blue-600 ml-2">Uploading...</span>
+                )}
+                {uploadError && (
+                  <span className="text-red-500 ml-2">{uploadError}</span>
+                )}
+                {uploadedUrl && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-green-600">Uploaded:</span>
+                    <code className="bg-gray-100 px-2 py-1 rounded text-xs">
+                      {uploadedUrl}
+                    </code>
+                    <button
+                      type="button"
+                      className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
+                      onClick={insertImageMarkdown}
+                    >
+                      Insert Markdown
+                    </button>
+                  </div>
+                )}
+              </div>
               <div className="mb-2 flex flex-col md:flex-row md:justify-between md:items-center gap-2 md:gap-0">
                 <div className="flex flex-col md:flex-row md:items-center gap-2">
                   <label className="font-semibold mr-2">
@@ -219,6 +304,7 @@ export default function AdminPage() {
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
                   disabled={loading || saving}
+                  ref={textareaRef}
                 />
                 <div className="w-full h-80 p-2 border rounded overflow-auto bg-white dark:bg-gray-900">
                   <div className="prose prose-sm max-w-none dark:prose-invert">
