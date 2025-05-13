@@ -27,6 +27,10 @@ const handler: Handler = async (event) => {
     const content = Buffer.from(file.content, "base64").toString("utf-8");
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
       body: JSON.stringify({ name: file.name, sha: file.sha, content }),
     };
   } catch (err) {
