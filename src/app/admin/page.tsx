@@ -117,6 +117,9 @@ export default function AdminPage() {
     );
     if (res.ok) {
       setSuccess(true);
+      setSelectedImage("");
+      setUploadedUrl("");
+      setSelectedPromoSlot(1);
     } else {
       const data = await res.json();
       setError(data.error || "Failed to save");

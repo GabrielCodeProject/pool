@@ -15,4 +15,18 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Promo Image", name: "promo_image", widget: "image-select" }
+      - {
+          label: "Promo 1 Image",
+          name: "promo_1_image",
+          widget: "image-select",
+        }
+      - {
+          label: "Promo 2 Image",
+          name: "promo_2_image",
+          widget: "image-select",
+        }
+      - {
+          label: "Promo 3 Image",
+          name: "promo_3_image",
+          widget: "image-select",
+        }
