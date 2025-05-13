@@ -8,6 +8,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { TypographyH1, TypographyP } from "@/components/ui/typography";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 type Frontmatter = {
   title?: string;
@@ -35,6 +42,43 @@ export default function Home() {
         setLoading(false);
       });
   }, []);
+
+  // Helper to extract promotion blocks from markdown
+  function extractPromotions(md: string) {
+    // Split by --- (horizontal rule)
+    const blocks = md.split(/\n---+\n/);
+    // Promotion blocks are those that start with an image and have bold text
+    return blocks
+      .map((block) => {
+        const imgMatch = block.match(/!\[[^\]]*\]\(([^)]+)\)/);
+        const boldMatch = block.match(/\*\*([^*]+)\*\*/);
+        if (imgMatch && boldMatch) {
+          return {
+            image: imgMatch[1],
+            text: boldMatch[1],
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
+  }
+
+  const promotions = extractPromotions(content) as {
+    image: string;
+    text: string;
+  }[];
+  // Remove promotion blocks from markdown for the rest of the content
+  function removePromotions(md: string) {
+    return md
+      .split(/\n---+\n/)
+      .filter(
+        (block) =>
+          !block.match(/!\[[^\]]*\]\(([^)]+)\)/) ||
+          !block.match(/\*\*([^*]+)\*\*/)
+      )
+      .join("\n\n---\n\n");
+  }
+  const mainContent = promotions.length ? removePromotions(content) : content;
 
   if (loading)
     return (
@@ -78,8 +122,33 @@ export default function Home() {
         </CardHeader>
         <Separator />
         <CardContent>
+          {promotions.length > 0 && (
+            <div className="mb-8">
+              <Carousel className="w-full max-w-2xl mx-auto">
+                <CarouselContent>
+                  {promotions.map((promo, idx) => (
+                    <CarouselItem
+                      key={idx}
+                      className="flex flex-col items-center justify-center"
+                    >
+                      <img
+                        src={promo.image}
+                        alt={promo.text}
+                        className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
+                      />
+                      <div className="text-xl font-bold text-center">
+                        {promo.text}
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </div>
+          )}
           <article className="prose prose-lg dark:prose-invert max-w-none">
-            <ReactMarkdown>{content}</ReactMarkdown>
+            <ReactMarkdown>{mainContent}</ReactMarkdown>
           </article>
         </CardContent>
       </Card>
