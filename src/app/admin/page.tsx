@@ -159,14 +159,48 @@ export default function AdminPage() {
   // Insert image markdown at cursor
   const insertImageMarkdown = () => {
     if (!uploadedUrl) return;
-    const md = `![Alt text](${uploadedUrl})`;
+    const md = `![Alt text promo ${selectedPromoSlot}](${uploadedUrl})`;
     const placeholder = `<!-- promo_image_${selectedPromoSlot} -->`;
+
+    // Regex to match an image markdown with the unique alt text for this slot
+    const imageRegex = new RegExp(
+      `!\\[Alt text promo ${selectedPromoSlot}\\]\\([^)]*\\)`,
+      "g"
+    );
+
+    let newBody = body;
     if (body.includes(placeholder)) {
-      setBody(body.replace(placeholder, md));
+      newBody = body.replace(placeholder, md);
     } else {
-      setBody(body + "\n" + md);
+      // Find all image markdowns with the unique alt text for this slot
+      const matches = [...body.matchAll(imageRegex)];
+      if (matches.length > 0) {
+        // Replace the first matching image
+        const match = matches[0];
+        if (match) {
+          newBody =
+            body.slice(0, match.index) +
+            md +
+            body.slice(match.index + match[0].length);
+        }
+      } else {
+        // Fallback: append at the end
+        newBody = body + "\n" + md;
+      }
     }
+    setBody(newBody);
   };
+
+  // Helper to get the current image URL for the selected promo slot
+  const getCurrentPromoImageUrl = () => {
+    const imageRegex = new RegExp(
+      `!\\[Alt text promo ${selectedPromoSlot}\\]\\(([^)]+)\\)`,
+      "i"
+    );
+    const match = body.match(imageRegex);
+    return match ? match[1] : null;
+  };
+  const currentPromoImageUrl = getCurrentPromoImageUrl();
 
   return (
     <div className="max-w-4xl mx-auto p-8">
@@ -251,6 +285,29 @@ export default function AdminPage() {
                         </option>
                       ))}
                     </select>
+                  </div>
+                  {/* UI feedback for current promo slot */}
+                  <div className="mb-2">
+                    <span className="font-semibold">
+                      Currently selected promo slot:{" "}
+                    </span>
+                    <span className="text-blue-700">
+                      Promo {selectedPromoSlot}
+                    </span>
+                    {currentPromoImageUrl ? (
+                      <div className="mt-1 flex items-center gap-2">
+                        <span className="text-gray-600">Current image:</span>
+                        <img
+                          src={currentPromoImageUrl}
+                          alt={`Promo ${selectedPromoSlot}`}
+                          className="h-12 rounded border"
+                        />
+                      </div>
+                    ) : (
+                      <div className="mt-1 text-gray-400">
+                        No image set for this slot.
+                      </div>
+                    )}
                   </div>
                   <input
                     type="file"
