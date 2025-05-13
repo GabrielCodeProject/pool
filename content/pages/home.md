@@ -1,7 +1,8 @@
 ---
 title: "Home"
-description: "Welcome to our site! Discover our promotions, who we are, and the services we offer."
+description: "Welcome to our site!"
 ---
+
 
 <!--
   This section is for your homepage carousel. In a real app, you might render images or cards here.
@@ -42,5 +43,3 @@ We offer a wide range of services to meet your needs:
 - **Digital Marketing**: SEO, social media, and online advertising
 - **Consulting**: Expert advice to grow your business
 - **Support & Maintenance**: Ongoing help to keep your project running smoothly
-
-Contact us to learn more about how we can help you succeed!
