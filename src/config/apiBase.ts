@@ -1,4 +1,4 @@
 export const API_BASE =
   process.env.NODE_ENV === "production"
-    ? "https://your-netlify-site.netlify.app/.netlify/functions"
+    ? "https://zingy-gnome-ade060.netlify.app/netlify/functions"
     : "/.netlify/functions";
