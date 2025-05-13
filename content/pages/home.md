@@ -1,6 +1,6 @@
 ---
 title: "Home"
-description: "Welcome to our site!"
+description: "Welcome to Piscine Azur"
 ---
 
 
