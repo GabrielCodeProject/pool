@@ -3,7 +3,7 @@ backend:
   repo: gabrielcodeproject/pool
   branch: main
   auth_scope: repo
-  client_id: process.env.GITHUB_CLIENT_ID
+  client_id: Ov23likdjdw5uy0twWt9
 ##  site_domain: zingy-gnome-ade060.netlify.app
 
 media_folder: "public/images/uploads"
