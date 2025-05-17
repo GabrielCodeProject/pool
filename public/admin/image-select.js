@@ -11,14 +11,14 @@ window.CMS.registerWidget(
         .then((options) => this.setState({ options, loading: false }));
     }
     handleChange = (e) => {
-      this.props.onChange(`../images/uploads/${e.target.value}`);
+      this.props.onChange(`/images/uploads/${e.target.value}`);
     };
     render() {
       if (this.state.loading) return "Loading...";
       return window.h(
         "select",
         {
-          value: (this.props.value || "").replace("../images/uploads/", ""),
+          value: (this.props.value || "").replace("/images/uploads/", ""),
           onChange: this.handleChange,
         },
         [window.h("option", { value: "" }, "Select an image")].concat(
