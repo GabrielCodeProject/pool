@@ -32,12 +32,6 @@ export default function AdminPage() {
   const [success, setSuccess] = useState(false);
   const [adminSecret, setAdminSecret] = useState<string>("");
   const [showSecretPrompt, setShowSecretPrompt] = useState(false);
-  // Image upload state
-  const [uploading, setUploading] = useState(false);
-  const [uploadedUrl, setUploadedUrl] = useState("");
-  const [uploadError, setUploadError] = useState("");
-  const [selectedPromoSlot, setSelectedPromoSlot] = useState(1);
-  const [allImages, setAllImages] = useState<string[]>([]);
 
   // Fetch file list
   useEffect(() => {
@@ -56,13 +50,6 @@ export default function AdminPage() {
     if (!adminSecret) {
       setShowSecretPrompt(true);
     }
-  }, []);
-
-  // Fetch all images in uploads folder on mount
-  useEffect(() => {
-    fetch("/.netlify/functions/list-uploads")
-      .then((res) => res.json())
-      .then((files) => setAllImages(files || []));
   }, []);
 
   // Fetch file content
@@ -118,8 +105,6 @@ export default function AdminPage() {
     );
     if (res.ok) {
       setSuccess(true);
-      setUploadedUrl("");
-      setSelectedPromoSlot(1);
     } else {
       const data = await res.json();
       setError(data.error || "Failed to save");
@@ -140,73 +125,15 @@ export default function AdminPage() {
     saveFile();
   };
 
-  // Image upload handler
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    setUploadError("");
-    setUploadedUrl("");
-    const formData = new FormData();
-    formData.append("file", file);
-    try {
-      const res = await fetch("/.netlify/functions/upload-image", {
-        method: "POST",
-        headers: {
-          "x-admin-secret": adminSecret,
-        },
-        body: formData,
-      });
-      const data = await res.json();
-      if (res.ok && data.url) {
-        setUploadedUrl(data.url);
-      } else {
-        setUploadError(data.error || "Upload failed");
-      }
-    } catch {
-      setUploadError("Upload failed");
-    }
-    setUploading(false);
-  };
-
-  // Insert image markdown at cursor
-  const insertImageMarkdown = () => {
-    if (!uploadedUrl) return;
-    const md = `![Alt text promo ${selectedPromoSlot}](${uploadedUrl})`;
-    const placeholder = `<!-- promo_image_${selectedPromoSlot} -->`;
-
-    // Regex to match an image markdown with the unique alt text for this slot
-    const imageRegex = new RegExp(
-      `!\\[Alt text promo ${selectedPromoSlot}\\]\\([^)]*\\)`,
-      "g"
-    );
-
-    let newBody = body;
-    if (body.includes(placeholder)) {
-      newBody = body.replace(placeholder, md);
-    } else {
-      // Find all image markdowns with the unique alt text for this slot
-      const matches = [...body.matchAll(imageRegex)];
-      if (matches.length > 0) {
-        // Replace the first matching image
-        const match = matches[0];
-        if (match) {
-          newBody =
-            body.slice(0, match.index) +
-            md +
-            body.slice(match.index + match[0].length);
-        }
-      } else {
-        // Fallback: append at the end
-        newBody = body + "\n" + md;
-      }
-    }
-    setBody(newBody);
-  };
-
   return (
     <div className="max-w-4xl mx-auto p-8">
       <h1 className="text-2xl font-bold mb-6">Admin CMS</h1>
+      <div className="mb-4 p-4 border rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-900 dark:text-yellow-100">
+        <b>Image uploads:</b> Use the Netlify CMS image widget to upload images.
+        Uploaded images will appear in <code>public/images/uploads</code>. To
+        use an image, copy its path (e.g.{" "}
+        <code>/images/uploads/your-image.png</code>) into the appropriate field.
+      </div>
       {loading && <div>Loading...</div>}
       {error && <div className="text-red-500 mb-2">{error}</div>}
       {success && <div className="text-green-600 mb-2">Saved!</div>}
@@ -307,38 +234,6 @@ export default function AdminPage() {
                     {saving ? "Saving..." : "Save"}
                   </button>
                 </div>
-                {/* Image upload UI */}
-                <div className="mb-4">
-                  {/* UI feedback for current promo slot */}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    disabled={uploading || saving}
-                    className="mb-2"
-                  />
-                  {uploading && (
-                    <span className="text-blue-600 ml-2">Uploading...</span>
-                  )}
-                  {uploadError && (
-                    <span className="text-red-500 ml-2">{uploadError}</span>
-                  )}
-                  {uploadedUrl && (
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="text-green-600">Uploaded:</span>
-                      <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-                        {uploadedUrl}
-                      </code>
-                      <button
-                        type="button"
-                        className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
-                        onClick={insertImageMarkdown}
-                      >
-                        Insert Markdown
-                      </button>
-                    </div>
-                  )}
-                </div>
                 {/* Promotion fields from frontmatter */}
                 <div className="mb-4">
                   <h2 className="font-semibold mb-2">Promotions</h2>
@@ -365,14 +260,6 @@ export default function AdminPage() {
                         className="border rounded p-1"
                       >
                         <option value="">Select an image</option>
-                        {allImages.map((img) => (
-                          <option
-                            key={img}
-                            value={`/pool/images/uploads/${img}`}
-                          >
-                            {img}
-                          </option>
-                        ))}
                       </select>
                       {(frontmatter as Record<string, string | undefined>)[
                         `promo_${i}_image`

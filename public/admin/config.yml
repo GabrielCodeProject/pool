@@ -1,7 +1,10 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: gabrielcodeproject/pool
   branch: main
-  site_domain: zingy-gnome-ade060.netlify.app
+  auth_scope: repo
+  client_id: process.env.GITHUB_CLIENT_ID
+##  site_domain: zingy-gnome-ade060.netlify.app
 
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
