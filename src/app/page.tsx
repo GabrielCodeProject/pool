@@ -113,23 +113,28 @@ export default function Home() {
             <div className="mb-8">
               <Carousel className="w-full max-w-2xl mx-auto">
                 <CarouselContent>
-                  {promos.map((promo, idx) => (
-                    <CarouselItem
-                      key={idx}
-                      className="flex flex-col items-center justify-center"
-                    >
-                      <Image
-                        src={promo.image as string}
-                        alt={promo.text as string}
-                        width={600}
-                        height={200}
-                        className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
-                      />
-                      <div className="text-xl font-bold text-center">
-                        {promo.text}
-                      </div>
-                    </CarouselItem>
-                  ))}
+                  {promos.map(
+                    (promo, idx) => (
+                      console.log("image to render path", promo.image),
+                      (
+                        <CarouselItem
+                          key={idx}
+                          className="flex flex-col items-center justify-center"
+                        >
+                          <Image
+                            src={promo.image as string}
+                            alt={promo.text as string}
+                            width={600}
+                            height={200}
+                            className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
+                          />
+                          <div className="text-xl font-bold text-center">
+                            {promo.text}
+                          </div>
+                        </CarouselItem>
+                      )
+                    )
+                  )}
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />
