@@ -1,13 +1,14 @@
 ---
 title: "Home"
 description: "Welcome to Piscine Azur"
-promo_1_image: "/images/uploads/promo1.jpg"
+promo_1_image: "../images/uploads/barbell-bench-press-chest-color-large-1.png"
 promo_1_text: "Big Summer Sale!"
-promo_2_image: "/images/uploads/promo2.jpg"
+promo_2_image: "../images/uploads/fitnessmodel.jpeg"
 promo_2_text: "Buy One Get One Free!"
-promo_3_image: "/images/uploads/promo3.jpg"
+promo_3_image: "../images/uploads/promotion.jpeg"
 promo_3_text: "Free Consultation for New Clients!"
 ---
+
 
 # 👥 Who We Are
 
