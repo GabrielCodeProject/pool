@@ -101,7 +101,7 @@ export default function AdminPage() {
     let markdown = `---\n`;
     for (const [key, value] of Object.entries(frontmatter)) {
       if (value !== undefined && value !== "") {
-        markdown += `${key}: \"${String(value).replace(/\"/g, '\"')}\"\n`;
+        markdown += `${key}: \"${String(value).replace(/\"/g, '"')}\"\n`;
       }
     }
     markdown += `---\n\n${body}`;
@@ -366,7 +366,10 @@ export default function AdminPage() {
                       >
                         <option value="">Select an image</option>
                         {allImages.map((img) => (
-                          <option key={img} value={`../images/uploads/${img}`}>
+                          <option
+                            key={img}
+                            value={`/pool/images/uploads/${img}`}
+                          >
                             {img}
                           </option>
                         ))}
