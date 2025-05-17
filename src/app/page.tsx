@@ -1,11 +1,8 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
+import fs from "fs";
+import path from "path";
 import matter from "gray-matter";
-import { API_BASE } from "@/config/apiBase";
+import ReactMarkdown from "react-markdown";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { TypographyH1, TypographyP } from "@/components/ui/typography";
 import {
@@ -29,27 +26,11 @@ type Frontmatter = {
 };
 
 export default function Home() {
-  const [content, setContent] = useState("");
-  const [frontmatter, setFrontmatter] = useState<Frontmatter>({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    fetch(`${API_BASE}/github-pages-read?slug=home`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.content) throw new Error("No content");
-        const parsed = matter(data.content);
-        setContent(parsed.content);
-        setFrontmatter(parsed.data as Frontmatter);
-        console.log("frontmatter", parsed.data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("Failed to load homepage content.");
-        setLoading(false);
-      });
-  }, []);
+  // Read markdown at build time
+  const filePath = path.join(process.cwd(), "content/pages/home.md");
+  const fileContent = fs.readFileSync(filePath, "utf-8");
+  const { content, data } = matter(fileContent);
+  const frontmatter = data as Frontmatter;
 
   // Build promos array from frontmatter
   const promos = [
@@ -66,33 +47,6 @@ export default function Home() {
       text: frontmatter.promo_3_text,
     },
   ].filter((p) => p.image && p.text);
-  console.log(promos);
-  if (loading)
-    return (
-      <main className="max-w-3xl mx-auto p-8">
-        <Card>
-          <CardHeader>
-            <Skeleton className="h-10 w-1/2 mb-2" />
-            <Skeleton className="h-6 w-2/3 mb-4" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="h-6 w-full mb-2" />
-            <Skeleton className="h-6 w-5/6 mb-2" />
-            <Skeleton className="h-6 w-4/6 mb-2" />
-            <Skeleton className="h-6 w-3/6" />
-          </CardContent>
-        </Card>
-      </main>
-    );
-  if (error)
-    return (
-      <main className="max-w-3xl mx-auto p-8">
-        <Alert variant="destructive">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      </main>
-    );
 
   return (
     <main className="max-w-3xl mx-auto p-8">
@@ -113,28 +67,23 @@ export default function Home() {
             <div className="mb-8">
               <Carousel className="w-full max-w-2xl mx-auto">
                 <CarouselContent>
-                  {promos.map(
-                    (promo, idx) => (
-                      console.log("image to render path", promo.image),
-                      (
-                        <CarouselItem
-                          key={idx}
-                          className="flex flex-col items-center justify-center"
-                        >
-                          <Image
-                            src={promo.image as string}
-                            alt={promo.text as string}
-                            width={600}
-                            height={200}
-                            className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
-                          />
-                          <div className="text-xl font-bold text-center">
-                            {promo.text}
-                          </div>
-                        </CarouselItem>
-                      )
-                    )
-                  )}
+                  {promos.map((promo, idx) => (
+                    <CarouselItem
+                      key={idx}
+                      className="flex flex-col items-center justify-center"
+                    >
+                      <Image
+                        src={promo.image as string}
+                        alt={promo.text as string}
+                        width={600}
+                        height={200}
+                        className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
+                      />
+                      <div className="text-xl font-bold text-center">
+                        {promo.text}
+                      </div>
+                    </CarouselItem>
+                  ))}
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />
