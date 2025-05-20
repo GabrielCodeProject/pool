@@ -1,6 +1,6 @@
 ---
 title: Piscine Azur
-promo_1_image: /pool/images/uploads/team.jpeg
+promo_1_image: /pool/images/uploads/1000002616.jpg
 promo_1_text: Big Summer Sale!
 promo_2_image: /pool/images/uploads/fitnessmodel.jpeg
 promo_2_text: Buy One Get One Free!
