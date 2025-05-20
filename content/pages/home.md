@@ -4,19 +4,19 @@ promo_1_image: /pool/images/uploads/1000002616.jpg
 promo_1_text: Big Summer Sale!
 promo_2_image: /pool/images/uploads/fitnessmodel.jpeg
 promo_2_text: Buy One Get One Free!
-promo_3_image: /pool/images/uploads/promotion.jpeg
 promo_3_text: Free Consultation for New Clients!
 description: Welcome to Piscine Azur
+promo_3_image: /pool/images/uploads/promotion.jpeg
 services:
-  - name: "Ouverture et fermeture de piscine"
-    description: "Préparez votre piscine pour la saison ou l’hiver avec un service complet."
-    price: "150€"
-  - name: "Premier nettoyage"
-    description: "Remise à neuf en début de saison pour une eau cristalline."
-    price: "100€"
-  - name: "Maintenance régulière"
-    description: "Entretien hebdomadaire ou bi-mensuel selon vos besoins."
-    price: "80€/mois"
+  - name: Ouverture et fermeture de piscine
+    description: Préparez votre piscine pour la saison ou l’hiver avec un service complet.
+    price: 300$
+  - name: Premier nettoyage
+    description: Remise à neuf en début de saison pour une eau cristalline.
+    price: 400$
+  - name: Maintenance régulière
+    description: Entretien hebdomadaire ou bi-mensuel selon vos besoins.
+    price: 1600$
 ---
 
 # Qui sommes-nous
