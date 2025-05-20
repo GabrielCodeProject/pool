@@ -5,8 +5,8 @@
 - Next.js (static export)
 - React (frontend)
 - Shadcn UI (UI components)
-- Netlify Functions (serverless backend)
-- GitHub API (content storage and versioning)
+- Netlify CMS (GitHub backend, served at /admin)
+- GitHub API (content storage and versioning, via Netlify CMS)
 - Markdown (content format)
 - TypeScript (where applicable)
 
@@ -14,16 +14,16 @@
 
 - Static site code in `src/`.
 - Markdown content in `content/pages/`.
-- Netlify Functions in `netlify/functions/`.
-- Environment variables managed via `.env` (local) and Netlify dashboard (prod).
-- Deployed static site to GitHub Pages; backend to Netlify.
+- Netlify CMS config in `public/admin/config.yml`.
+- Images uploaded via CMS to `public/images/uploads/`.
+- Deployed static site to GitHub Pages.
 
 ## Technical Constraints
 
 - No dynamic Next.js API routes (static export only).
-- All dynamic/admin features must use Netlify Functions.
-- CORS must be handled for all API endpoints.
-- Secrets must not be exposed in the static build.
+- No serverless backend or Netlify Functions.
+- All admin/content management is client-side via Netlify CMS and the GitHub API.
+- Secrets are managed by Netlify CMS OAuth; no backend secrets required.
 
 ## Dependencies
 
@@ -31,3 +31,4 @@
 - gray-matter (markdown frontmatter parsing)
 - react-markdown (markdown rendering)
 - shadcn/ui (UI components)
+- netlify-cms-app (CMS)

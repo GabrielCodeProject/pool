@@ -4,24 +4,23 @@
 
 - Static Next.js site exported and deployed to GitHub Pages.
 - Content stored as markdown in `content/pages/` in the GitHub repo.
-- Netlify Functions provide all dynamic/admin API endpoints, interacting with the GitHub API.
-- Admin UI is part of the static site, but all admin actions go through Netlify Functions.
+- Netlify CMS (served at `/admin`) provides all admin/content management, interacting directly with the GitHub API via the browser.
+- No serverless backend or custom API endpoints.
 
 ## Key Technical Decisions
 
 - Use of static export for maximum compatibility with GitHub Pages.
-- All dynamic logic (read/write content, authentication) handled by Netlify Functions, not Next.js API routes.
-- CORS and preflight handling for all cross-origin API calls.
-- Environment variables for secrets (GitHub token, admin secret) managed in Netlify.
+- All admin/content management logic handled client-side by Netlify CMS (GitHub backend).
+- No dynamic Next.js API routes or serverless functions.
+- Image uploads and markdown edits are committed directly to the GitHub repo via the CMS UI.
 
 ## Design Patterns
 
-- Separation of static and dynamic concerns (static site vs. serverless backend).
+- Separation of static site and client-side admin logic.
 - Form-based frontmatter editing to prevent YAML errors.
 - Live markdown preview for better UX.
 
 ## Component Relationships
 
-- Static site fetches content from Netlify Functions.
-- Admin UI interacts with Netlify Functions for all content management.
-- Netlify Functions interact with GitHub API for content CRUD.
+- Static site fetches content from markdown files in the repo.
+- Admin UI (Netlify CMS) interacts with the GitHub API for all content management.

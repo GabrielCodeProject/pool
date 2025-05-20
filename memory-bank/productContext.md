@@ -3,18 +3,18 @@
 ## Why This Project Exists
 
 - To provide a simple, user-friendly CMS for static sites, enabling non-technical users to manage content without direct GitHub or code access.
-- To leverage GitHub as a single source of truth for content, with a modern editing UI and secure workflow.
+- To leverage GitHub as a single source of truth for content, with a modern editing UI and secure workflow (now via Netlify CMS, not a custom admin panel).
 
 ## Problems It Solves
 
 - Non-technical users struggle to edit markdown or manage content in GitHub directly.
 - Static site generators lack easy, secure, and user-friendly content management for non-developers.
-- Need for a workflow that separates static site delivery (GitHub Pages) from dynamic admin/API logic (Netlify Functions).
+- Need for a workflow that separates static site delivery (GitHub Pages) from content management (Netlify CMS with GitHub backend).
 
 ## How It Should Work
 
 - Users visit the static site for content.
-- Admins log in to a web UI to edit markdown files, with live preview and safe frontmatter editing.
+- Admins log in to Netlify CMS at `/admin` to edit markdown files, with live preview and safe frontmatter editing.
 - Changes are committed to GitHub, triggering a new static build.
 
 ## User Experience Goals
