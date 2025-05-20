@@ -78,7 +78,6 @@ export default function Home() {
                         width={600}
                         height={200}
                         className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
-                        fill
                       />
                       <div className="text-xl font-bold text-center">
                         {promo.text}
