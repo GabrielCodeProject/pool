@@ -4,6 +4,8 @@ backend:
   branch: main
   ##auth_scope: repo
   client_id: Ov23likdjdw5uy0twWt9
+  base_url: https://pool-cms-oauth.onrender.com
+  auth_endpoint: auth
 ##  site_domain: zingy-gnome-ade060.netlify.app
 
 media_folder: "public/images/uploads"
