@@ -9,19 +9,15 @@ promo_3_text: Free Consultation for New Clients!
 description: Welcome to Piscine Azur
 ---
 
-# 👥 Who We Are
+# Qui sommes-nous
 
-We are a passionate team dedicated to delivering the best solutions for our clients. Our mission is to provide high-quality services with a personal touch.
+Depuis plus de 10 ans, Piscine Azur est un partenaire de confiance pour l’entretien résidentiel de piscines. Basés localement, nous mettons notre expertise au service de votre tranquillité d’esprit, avec des interventions rapides, efficaces et personnalisées. Notre priorité : garantir une eau claire et une piscine parfaitement entretenue, tout au long de la saison.
 
-- Experienced professionals
-- Customer-focused
-- Innovative and reliable
+# Nos services
 
-# 🛠️ Our Services
+Ouverture et fermeture de piscine : Préparez votre piscine pour la saison ou l’hiver avec un service complet.
 
-We offer a wide range of services to meet your needs:
-
-- **Web Development**: Modern, responsive websites and web apps
-- **Digital Marketing**: SEO, social media, and online advertising
-- **Consulting**: Expert advice to grow your business
-- **Support & Maintenance**: Ongoing help to keep your project running smoothly
+Premier nettoyage : Remise à neuf en début de saison pour une eau cristalline.
+Maintenance régulière : Entretien hebdomadaire ou bi-mensuel selon vos besoins.
+Service personnalisé : Contactez-nous pour un plan sur mesure adapté à votre horaire et votre budget.
+Appels de service : Intervention rapide en cas de problème ou d’urgence.
