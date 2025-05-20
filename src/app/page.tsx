@@ -23,6 +23,7 @@ type Frontmatter = {
   promo_2_text?: string;
   promo_3_image?: string;
   promo_3_text?: string;
+  services?: { name: string; description: string; price: string }[];
 };
 
 export default function Home() {
@@ -47,6 +48,9 @@ export default function Home() {
       text: frontmatter.promo_3_text,
     },
   ].filter((p) => p.image && p.text);
+
+  // Get services from frontmatter
+  const services = frontmatter.services || [];
 
   return (
     <main className="max-w-3xl mx-auto p-8">
@@ -90,6 +94,35 @@ export default function Home() {
               </Carousel>
             </div>
           )}
+
+          {/* Services Section */}
+          {services.length > 0 && (
+            <section className="mb-8">
+              <TypographyH1 className="text-2xl mb-4">
+                Nos services
+              </TypographyH1>
+              <div className="grid gap-4">
+                {services.map((service, idx) => (
+                  <Card key={idx} className="border shadow-sm">
+                    <CardHeader>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-lg">
+                          {service.name}
+                        </span>
+                        <span className="text-primary font-semibold">
+                          {service.price}
+                        </span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <TypographyP>{service.description}</TypographyP>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          )}
+
           <article className="prose prose-lg dark:prose-invert max-w-none">
             <ReactMarkdown>{content}</ReactMarkdown>
           </article>
