@@ -1,5 +1,5 @@
 ---
-title: Home
+title: Piscine Azur
 promo_1_image: /pool/images/uploads/team.jpeg
 promo_1_text: Big Summer Sale!
 promo_2_image: /pool/images/uploads/fitnessmodel.jpeg
