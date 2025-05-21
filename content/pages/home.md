@@ -2,7 +2,7 @@
 title: Piscine Azur
 promo_1_image: /pool/images/uploads/1000002616.jpg
 promo_1_text: Big Summer Sale!
-promo_2_image: /pool/images/uploads/fitnessmodel.jpeg
+promo_2_image: /pool/images/uploads/1000002793.jpg
 promo_2_text: Buy One Get One Free!
 promo_3_text: Free Consultation for New Clients!
 description: Welcome to Piscine Azur
