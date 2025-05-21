@@ -6,7 +6,7 @@ promo_2_image: /pool/images/uploads/1000002793.jpg
 promo_2_text: Buy One Get One Free!
 promo_3_text: Free Consultation for New Clients!
 description: Welcome to Piscine Azur
-promo_3_image: /pool/images/uploads/promotion.jpeg
+promo_3_image: /pool/images/uploads/1000002607.jpg
 services:
   - name: Ouverture et fermeture de piscine
     description: Préparez votre piscine pour la saison ou l’hiver avec un service complet.
