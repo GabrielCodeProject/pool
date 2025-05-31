@@ -23,6 +23,7 @@ type Frontmatter = {
   promo_2_text?: string;
   promo_3_image?: string;
   promo_3_text?: string;
+  promotions?: { image: string; text: string }[];
   services?: { name: string; description: string; price: string }[];
 };
 
@@ -33,21 +34,8 @@ export default function Home() {
   const { content, data } = matter(fileContent);
   const frontmatter = data as Frontmatter;
 
-  // Build promos array from frontmatter
-  const promos = [
-    {
-      image: frontmatter.promo_1_image,
-      text: frontmatter.promo_1_text,
-    },
-    {
-      image: frontmatter.promo_2_image,
-      text: frontmatter.promo_2_text,
-    },
-    {
-      image: frontmatter.promo_3_image,
-      text: frontmatter.promo_3_text,
-    },
-  ].filter((p) => p.image && p.text);
+  // Get promotions from frontmatter
+  const promotions = frontmatter.promotions || [];
 
   // Get services from frontmatter
   const services = frontmatter.services || [];
@@ -77,18 +65,22 @@ export default function Home() {
         </CardHeader>
         <Separator />
         <CardContent>
-          {promos.length > 0 && (
-            <div className="mb-8">
+          {/* Promotions Carousel Section */}
+          {promotions.length > 0 && (
+            <section className="mb-8">
+              <TypographyH1 className="text-xl sm:text-2xl mb-4 text-center">
+                Promotions
+              </TypographyH1>
               <Carousel className="w-full max-w-xs sm:max-w-lg md:max-w-2xl mx-auto">
                 <CarouselContent>
-                  {promos.map((promo, idx) => (
+                  {promotions.map((promo, idx) => (
                     <CarouselItem
                       key={idx}
                       className="flex flex-col items-center justify-center"
                     >
                       <Image
-                        src={promo.image as string}
-                        alt={promo.text as string}
+                        src={promo.image}
+                        alt={promo.text}
                         width={350}
                         height={120}
                         className="rounded-lg w-full max-w-xs sm:max-w-md object-cover mb-4"
@@ -102,7 +94,7 @@ export default function Home() {
                 <CarouselPrevious />
                 <CarouselNext />
               </Carousel>
-            </div>
+            </section>
           )}
 
           {/* Services Section */}
