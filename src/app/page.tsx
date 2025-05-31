@@ -53,81 +53,83 @@ export default function Home() {
   const services = frontmatter.services || [];
 
   return (
-    <main className="max-w-3xl mx-auto p-8">
-      <Card>
-        <CardHeader>
-          <TypographyH1 className="mb-2">
-            {frontmatter.title || "Home"}
-          </TypographyH1>
-          {frontmatter.description && (
-            <TypographyP className="mb-4 text-gray-600 dark:text-gray-300">
-              {frontmatter.description}
-            </TypographyP>
-          )}
-        </CardHeader>
-        <Separator />
-        <CardContent>
-          {promos.length > 0 && (
-            <div className="mb-8">
-              <Carousel className="w-full max-w-2xl mx-auto">
-                <CarouselContent>
-                  {promos.map((promo, idx) => (
-                    <CarouselItem
-                      key={idx}
-                      className="flex flex-col items-center justify-center"
-                    >
-                      <Image
-                        src={promo.image as string}
-                        alt={promo.text as string}
-                        width={600}
-                        height={200}
-                        className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
-                      />
-                      <div className="text-xl font-bold text-center">
-                        {promo.text}
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </div>
-          )}
-
-          {/* Services Section */}
-          {services.length > 0 && (
-            <section className="mb-8">
-              <TypographyH1 className="text-2xl mb-4">
-                Nos services
-              </TypographyH1>
-              <div className="grid gap-4">
-                {services.map((service, idx) => (
-                  <Card key={idx} className="border shadow-sm">
-                    <CardHeader>
-                      <div className="flex justify-between items-center">
-                        <span className="font-bold text-lg">
-                          {service.name}
-                        </span>
-                        <span className="text-primary font-semibold">
-                          {service.price}
-                        </span>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <TypographyP>{service.description}</TypographyP>
-                    </CardContent>
-                  </Card>
-                ))}
+    <main className="max-w-3xl mx-auto p-8 min-h-screen flex items-center justify-center">
+      <div className="parallax-bg w-full p-4 flex items-center justify-center">
+        <Card className="bg-white/80 dark:bg-gray-900/80 shadow-lg backdrop-blur-md">
+          <CardHeader>
+            <TypographyH1 className="mb-2">
+              {frontmatter.title || "Home"}
+            </TypographyH1>
+            {frontmatter.description && (
+              <TypographyP className="mb-4 text-gray-600 dark:text-gray-300">
+                {frontmatter.description}
+              </TypographyP>
+            )}
+          </CardHeader>
+          <Separator />
+          <CardContent>
+            {promos.length > 0 && (
+              <div className="mb-8">
+                <Carousel className="w-full max-w-2xl mx-auto">
+                  <CarouselContent>
+                    {promos.map((promo, idx) => (
+                      <CarouselItem
+                        key={idx}
+                        className="flex flex-col items-center justify-center"
+                      >
+                        <Image
+                          src={promo.image as string}
+                          alt={promo.text as string}
+                          width={600}
+                          height={200}
+                          className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
+                        />
+                        <div className="text-xl font-bold text-center">
+                          {promo.text}
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
               </div>
-            </section>
-          )}
+            )}
 
-          <article className="prose prose-lg dark:prose-invert max-w-none">
-            <ReactMarkdown>{content}</ReactMarkdown>
-          </article>
-        </CardContent>
-      </Card>
+            {/* Services Section */}
+            {services.length > 0 && (
+              <section className="mb-8">
+                <TypographyH1 className="text-2xl mb-4">
+                  Nos services
+                </TypographyH1>
+                <div className="grid gap-4">
+                  {services.map((service, idx) => (
+                    <Card key={idx} className="border shadow-sm">
+                      <CardHeader>
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-lg">
+                            {service.name}
+                          </span>
+                          <span className="text-primary font-semibold">
+                            {service.price}
+                          </span>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <TypographyP>{service.description}</TypographyP>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            <article className="prose prose-lg dark:prose-invert max-w-none">
+              <ReactMarkdown>{content}</ReactMarkdown>
+            </article>
+          </CardContent>
+        </Card>
+      </div>
     </main>
   );
 }

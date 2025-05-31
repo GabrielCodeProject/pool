@@ -5,6 +5,7 @@ backend:
   client_id: Ov23likdjdw5uy0twWt9
   base_url: https://pool-cms-oauth.onrender.com
   auth_endpoint: auth
+  local_backend: true
 ##  site_domain: zingy-gnome-ade060.netlify.app
 
 media_folder: "public/images/uploads"
@@ -45,12 +46,16 @@ collections:
           - label: "Name"
             name: "name"
             widget: "string"
+            required: true
           - label: "Description"
             name: "description"
             widget: "text"
           - label: "Price"
             name: "price"
-            widget: "string"
+            widget: "number"
+            required: true
+            min: 0
+            hint: "Price in CAD"
       - label: "Body"
         name: "body"
         widget: "markdown"
