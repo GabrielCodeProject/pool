@@ -16,6 +16,21 @@ export function TypographyH1({
   );
 }
 
+export function TypographyH2({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLHeadingElement>) {
+  return (
+    <h1
+      className={cn(
+        "scroll-m-20 text-2xl font-bold tracking-tight lg:text-3xl",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
 export function TypographyP({
   className,
   ...props

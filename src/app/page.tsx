@@ -4,7 +4,11 @@ import matter from "gray-matter";
 import ReactMarkdown from "react-markdown";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { TypographyH1, TypographyP } from "@/components/ui/typography";
+import {
+  TypographyH1,
+  TypographyH2,
+  TypographyP,
+} from "@/components/ui/typography";
 import {
   Carousel,
   CarouselContent,
@@ -128,7 +132,29 @@ export default function Home() {
           )}
 
           <article className="prose prose-sm sm:prose-lg dark:prose-invert max-w-none">
-            <ReactMarkdown>{content}</ReactMarkdown>
+            <ReactMarkdown
+              components={{
+                h1: (props) => (
+                  <TypographyH1 {...props} className="mb-4 text-center" />
+                ),
+                h2: (props) => (
+                  <TypographyH2 {...props} className="mb-3 text-center" />
+                ),
+                p: (props) => <TypographyP {...props} className="mb-2" />,
+                ul: (props) => (
+                  <ul {...props} className="list-disc pl-6 mb-2" />
+                ),
+                ol: (props) => (
+                  <ol {...props} className="list-decimal pl-6 mb-2" />
+                ),
+                li: (props) => <li {...props} className="mb-1" />,
+                a: (props) => (
+                  <a {...props} className="text-primary underline" />
+                ),
+              }}
+            >
+              {content}
+            </ReactMarkdown>
           </article>
         </CardContent>
       </Card>
