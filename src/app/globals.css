@@ -113,11 +113,10 @@
 }
 
 .parallax-bg {
-  background-image: url("/pool-bg.jpg");
+  background-image: url("/pool/images/uploads/pool-image.jpg");
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
-  border-radius: 1rem;
   min-height: 600px; /* adjust as needed */
 }
 

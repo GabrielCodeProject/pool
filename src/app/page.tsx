@@ -53,83 +53,93 @@ export default function Home() {
   const services = frontmatter.services || [];
 
   return (
-    <main className="max-w-3xl mx-auto p-8 min-h-screen flex items-center justify-center">
-      <div className="parallax-bg w-full p-4 flex items-center justify-center">
-        <Card className="bg-white/80 dark:bg-gray-900/80 shadow-lg backdrop-blur-md">
-          <CardHeader>
-            <TypographyH1 className="mb-2">
-              {frontmatter.title || "Home"}
-            </TypographyH1>
-            {frontmatter.description && (
-              <TypographyP className="mb-4 text-gray-600 dark:text-gray-300">
-                {frontmatter.description}
-              </TypographyP>
-            )}
-          </CardHeader>
-          <Separator />
-          <CardContent>
-            {promos.length > 0 && (
-              <div className="mb-8">
-                <Carousel className="w-full max-w-2xl mx-auto">
-                  <CarouselContent>
-                    {promos.map((promo, idx) => (
-                      <CarouselItem
-                        key={idx}
-                        className="flex flex-col items-center justify-center"
-                      >
-                        <Image
-                          src={promo.image as string}
-                          alt={promo.text as string}
-                          width={600}
-                          height={200}
-                          className="rounded-lg w-full max-w-xl h-auto object-cover mb-4"
-                        />
-                        <div className="text-xl font-bold text-center">
-                          {promo.text}
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </Carousel>
-              </div>
-            )}
-
-            {/* Services Section */}
-            {services.length > 0 && (
-              <section className="mb-8">
-                <TypographyH1 className="text-2xl mb-4">
-                  Nos services
-                </TypographyH1>
-                <div className="grid gap-4">
-                  {services.map((service, idx) => (
-                    <Card key={idx} className="border shadow-sm">
-                      <CardHeader>
-                        <div className="flex justify-between items-center">
-                          <span className="font-bold text-lg">
-                            {service.name}
-                          </span>
-                          <span className="text-primary font-semibold">
-                            {service.price}
-                          </span>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <TypographyP>{service.description}</TypographyP>
-                      </CardContent>
-                    </Card>
+    <main className="parallax-bg min-h-screen flex items-center justify-center p-2 sm:p-6">
+      <Card className="w-full max-w-lg sm:max-w-2xl md:max-w-3xl bg-white/50 dark:bg-gray-900/50 shadow-lg backdrop-blur-md rounded-lg sm:rounded-xl mx-auto">
+        <CardHeader>
+          <TypographyH1 className="mb-2 text-center text-2xl sm:text-3xl md:text-4xl">
+            {frontmatter.title || "Home"}
+            <div className="flex justify-center">
+              <Image
+                src="/pool/images/uploads/logo.jpg"
+                alt="Pool"
+                width={150}
+                height={100}
+                className="py-3 w-32 h-auto sm:w-48"
+                priority
+              />
+            </div>
+          </TypographyH1>
+          {frontmatter.description && (
+            <TypographyP className="mb-4 text-gray-600 dark:text-gray-300 text-center text-base sm:text-lg">
+              {frontmatter.description}
+            </TypographyP>
+          )}
+        </CardHeader>
+        <Separator />
+        <CardContent>
+          {promos.length > 0 && (
+            <div className="mb-8">
+              <Carousel className="w-full max-w-xs sm:max-w-lg md:max-w-2xl mx-auto">
+                <CarouselContent>
+                  {promos.map((promo, idx) => (
+                    <CarouselItem
+                      key={idx}
+                      className="flex flex-col items-center justify-center"
+                    >
+                      <Image
+                        src={promo.image as string}
+                        alt={promo.text as string}
+                        width={350}
+                        height={120}
+                        className="rounded-lg w-full max-w-xs sm:max-w-md object-cover mb-4"
+                      />
+                      <div className="text-lg sm:text-xl font-bold text-center">
+                        {promo.text}
+                      </div>
+                    </CarouselItem>
                   ))}
-                </div>
-              </section>
-            )}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </div>
+          )}
 
-            <article className="prose prose-lg dark:prose-invert max-w-none">
-              <ReactMarkdown>{content}</ReactMarkdown>
-            </article>
-          </CardContent>
-        </Card>
-      </div>
+          {/* Services Section */}
+          {services.length > 0 && (
+            <section className="mb-8">
+              <TypographyH1 className="text-xl sm:text-2xl mb-4 text-center">
+                Nos services
+              </TypographyH1>
+              <div className="grid gap-4">
+                {services.map((service, idx) => (
+                  <Card key={idx} className="border shadow-sm">
+                    <CardHeader>
+                      <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+                        <span className="font-bold text-base sm:text-lg">
+                          {service.name}
+                        </span>
+                        <span className="text-primary font-semibold text-base sm:text-lg">
+                          {service.price}
+                        </span>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <TypographyP className="text-sm sm:text-base">
+                        {service.description}
+                      </TypographyP>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <article className="prose prose-sm sm:prose-lg dark:prose-invert max-w-none">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </article>
+        </CardContent>
+      </Card>
     </main>
   );
 }
