@@ -1,8 +1,6 @@
 ---
-promo_3_text: Free Consultation for New Clients!
-promo_2_text: Buy One Get One Free!
-promo_1_text: Big Summer Sale!
 title: Piscine Azur
+description: Welcome to Piscine Azur
 promotions:
   - image: /pool/images/uploads/logo.jpg
     text: Who we are
@@ -10,8 +8,6 @@ promotions:
     text: clean pool
   - image: /pool/images/uploads/promotion.jpeg
     text: promotion
-description: Welcome to Piscine Azur
-promo_1_image: /pool/images/uploads/1000002616.jpg
 services:
   - name: Ouverture et fermeture de piscine
     description: Préparez votre piscine pour la saison ou l’hiver avec un service complet.
@@ -22,8 +18,6 @@ services:
   - name: Maintenance régulière
     description: Entretien hebdomadaire ou bi-mensuel selon vos besoins.
     price: 1600$
-promo_2_image: /pool/images/uploads/1000002793.jpg
-promo_3_image: /pool/images/uploads/1000002607.jpg
 ---
 
 # Qui sommes-nous
