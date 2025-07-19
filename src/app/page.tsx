@@ -17,6 +17,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import { generateMetadata as generateMetadataUtil } from "@/lib/metadata";
 
 type Frontmatter = {
   title?: string;
@@ -29,7 +30,25 @@ type Frontmatter = {
   promo_3_text?: string;
   promotions?: { image: string; text: string }[];
   services?: { name: string; description: string; price: string }[];
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string;
+    image?: string;
+  };
 };
+
+// Generate metadata for this page using our SEO utilities
+export async function generateMetadata() {
+  // Read markdown file to get frontmatter data
+  const filePath = path.join(process.cwd(), "content/pages/home.md");
+  const fileContent = fs.readFileSync(filePath, "utf-8");
+  const { data } = matter(fileContent);
+  const frontmatter = data as Frontmatter;
+
+  // Use our metadata utility to generate complete metadata
+  return generateMetadataUtil(frontmatter);
+}
 
 export default function Home() {
   // Read markdown at build time
