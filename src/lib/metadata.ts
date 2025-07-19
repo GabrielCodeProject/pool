@@ -121,8 +121,17 @@ export function generateMetadata(pageData: PageData): Metadata {
           height: 630,
           alt: `${getBusinessName()} - Pool Maintenance Services in ${getServiceArea()}`,
         },
+        {
+          url: imageUrl,
+          width: 800,
+          height: 600,
+          alt: `${getBusinessName()} - Pool Maintenance Services in ${getServiceArea()}`,
+        },
       ],
       locale: "en_CA",
+      countryName: "Canada",
+      emails: [BUSINESS_INFO.contact.email],
+      phoneNumbers: [BUSINESS_INFO.contact.phone],
     },
 
     // Twitter Card
@@ -159,6 +168,19 @@ export function generateMetadata(pageData: PageData): Metadata {
     other: {
       "og:locale": "en_CA",
       "og:region": "CA-QC",
+      "og:street-address": BUSINESS_INFO.location.fullAddress,
+      "og:locality": BUSINESS_INFO.location.city,
+      "og:postal-code": BUSINESS_INFO.location.postalCode,
+      "og:country-name": "Canada",
+      "business:contact_data:street_address":
+        BUSINESS_INFO.location.fullAddress,
+      "business:contact_data:locality": BUSINESS_INFO.location.city,
+      "business:contact_data:region": BUSINESS_INFO.location.province,
+      "business:contact_data:postal_code": BUSINESS_INFO.location.postalCode,
+      "business:contact_data:country_name": "Canada",
+      "business:contact_data:email": BUSINESS_INFO.contact.email,
+      "business:contact_data:phone_number": BUSINESS_INFO.contact.phone,
+      "business:contact_data:website": BUSINESS_INFO.contact.website,
     },
 
     // Verification tags (to be added when available)
