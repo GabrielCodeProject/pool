@@ -18,6 +18,11 @@ services:
   - name: Maintenance régulière
     description: Entretien hebdomadaire ou bi-mensuel selon vos besoins.
     price: 1600$
+seo:
+  title: "Professional Pool Maintenance & Cleaning Services"
+  description: "Expert pool maintenance in Montreal. 10+ years experience. Pool opening, cleaning, and regular maintenance. Get crystal clear water all season long."
+  keywords: "pool maintenance Montreal, swimming pool cleaning, pool service Quebec, piscine entretien Montreal, pool opening closing"
+  image: "/pool/images/uploads/pool-image.jpg"
 ---
 
 # Qui sommes-nous

@@ -23,12 +23,12 @@
     },
     "types": ["react", "react-dom"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": [
-    "node_modules",
-    "netlify/functions",
-    "src/app/api/auth/",
-    "src/app/api/auth/callback",
-    "src/app/api/auth/login"
-  ]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "out/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }

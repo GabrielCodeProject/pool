@@ -54,6 +54,38 @@ collections:
             required: true
             min: 0
             hint: "Price in CAD"
+      - label: "SEO Settings"
+        name: "seo"
+        widget: "object"
+        collapsed: true
+        hint: "Optional SEO optimization fields. Leave empty to use smart defaults."
+        fields:
+          - label: "SEO Title"
+            name: "title"
+            widget: "string"
+            required: false
+            hint: "Custom title for search engines (50-60 characters recommended). If empty, page title will be used with business name."
+            pattern: ["^.{0,60}$", "SEO title should be 60 characters or less"]
+          - label: "Meta Description"
+            name: "description"
+            widget: "text"
+            required: false
+            hint: "Description for search engines (150-160 characters recommended). If empty, page description or smart default will be used."
+            pattern:
+              [
+                "^.{0,160}$",
+                "Meta description should be 160 characters or less",
+              ]
+          - label: "Keywords"
+            name: "keywords"
+            widget: "string"
+            required: false
+            hint: "Comma-separated keywords for this page (e.g., pool cleaning, maintenance). If empty, business keywords will be used."
+          - label: "Featured Image"
+            name: "image"
+            widget: "image"
+            required: false
+            hint: "Image for social media sharing (1200x630px recommended). If empty, default business image will be used."
       - label: "Body"
         name: "body"
         widget: "markdown"
