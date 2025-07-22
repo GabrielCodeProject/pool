@@ -16,9 +16,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Image from "next/image";
 import { generateMetadata as generateMetadataUtil } from "@/lib/metadata";
 import { generatePageStructuredData } from "@/lib/schema-generator";
+import { BusinessLogoImage, PromotionImage } from "@/components/ui/image-seo";
 
 type Frontmatter = {
   title?: string;
@@ -77,13 +77,10 @@ export default function Home() {
           <TypographyH1 className="mb-2 text-center text-2xl sm:text-3xl md:text-4xl">
             {frontmatter.title || "Home"}
             <div className="flex justify-center">
-              <Image
+              <BusinessLogoImage
                 src="/pool/images/uploads/logo.jpg"
-                alt="Pool"
                 width={150}
                 height={100}
-                className="py-3 w-32 h-auto sm:w-48"
-                priority
               />
             </div>
           </TypographyH1>
@@ -108,12 +105,11 @@ export default function Home() {
                       key={idx}
                       className="flex flex-col items-center justify-center"
                     >
-                      <Image
+                      <PromotionImage
                         src={promo.image}
                         alt={promo.text}
                         width={350}
                         height={120}
-                        className="rounded-lg w-full max-w-xs sm:max-w-md object-cover mb-4"
                       />
                       <div className="text-lg sm:text-xl font-bold text-center">
                         {promo.text}

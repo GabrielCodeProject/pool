@@ -6,7 +6,7 @@
 - `src/app/layout.tsx` - Updated root layout with global SEO meta tags and language declaration
 - `src/app/page.tsx` - Updated home page with dynamic metadata generation and structured data
 - `content/pages/home.md` - Updated content file with SEO frontmatter fields
-- `src/components/ui/image-seo.tsx` - Component for SEO-optimized image rendering with proper alt text
+- `src/components/ui/image-seo.tsx` - SEO-optimized image component with context-aware alt text generation and responsive sizing
 - `src/components/ui/image-seo.test.tsx` - Unit tests for SEO image component
 - `src/lib/business-data.ts` - Centralized business information for reuse across SEO implementations
 - `src/lib/schema-generator.ts` - Utility functions for generating JSON-LD structured data
@@ -46,7 +46,7 @@
   - [x] 3.6 Add canonical URLs and proper robots meta tags
   - [x] 3.7 Ensure all meta tags work with static site generation (output: "export")
 
-- [ ] 4.0 Add Structured Data for Local Business and Services
+- [x] 4.0 Add Structured Data for Local Business and Services
 
   - [x] 4.1 Implement local business JSON-LD schema with Montreal/Quebec location data
   - [x] 4.2 Add business contact information (phone, email, address) to structured data
@@ -55,18 +55,18 @@
   - [x] 4.5 Add structured data script tag to page component using schema generator
   - [x] 4.6 Mark up business as "LocalBusiness" with "HomeAndConstructionBusiness" subtype
 
-- [ ] 5.0 Implement Image SEO Optimization
+- [x] 5.0 Implement Image SEO Optimization
 
-  - [ ] 5.1 Create `src/components/ui/image-seo.tsx` component for SEO-optimized image rendering
-  - [ ] 5.2 Add automatic alt text generation based on image context and business focus
-  - [ ] 5.3 Optimize social sharing image dimensions (1200x630px) and format
-  - [ ] 5.4 Update existing Image components to use SEO-optimized version with proper alt text
-  - [ ] 5.5 Add unit tests for image SEO component in `src/components/ui/image-seo.test.tsx`
+  - [x] 5.1 Create `src/components/ui/image-seo.tsx` component for SEO-optimized image rendering
+  - [x] 5.2 Add automatic alt text generation based on image context and business focus
+  - [x] 5.3 Optimize social sharing image dimensions (1200x630px) and format
+  - [x] 5.4 Update existing Image components to use SEO-optimized version with proper alt text
+  - [x] 5.5 Add unit tests for image SEO component in `src/components/ui/image-seo.test.tsx`
 
-- [ ] 6.0 Testing and Validation
-  - [ ] 6.1 Test structured data using Google's Rich Results Test tool
-  - [ ] 6.2 Validate Open Graph tags using Facebook's Sharing Debugger
-  - [ ] 6.3 Test Twitter Card metadata using Twitter's Card Validator
-  - [ ] 6.4 Verify mobile-friendliness using Google's Mobile-Friendly Test
-  - [ ] 6.5 Check page speed and Core Web Vitals with PageSpeed Insights
-  - [ ] 6.6 Manually test search result appearance and social media previews
+- [x] 6.0 Testing and Validation
+  - [x] 6.1 Test structured data using Google's Rich Results Test tool
+  - [x] 6.2 Validate Open Graph tags using Facebook's Sharing Debugger
+  - [x] 6.3 Test Twitter Card metadata using Twitter's Card Validator
+  - [x] 6.4 Verify mobile-friendliness using Google's Mobile-Friendly Test (via PageSpeed Insights/Lighthouse)
+  - [x] 6.5 Check page speed and Core Web Vitals with PageSpeed Insights
+  - [x] 6.6 Manually test search result appearance and social media previews
