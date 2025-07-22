@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { generateMetadata as generateMetadataUtil } from "@/lib/metadata";
+import { generatePageStructuredData } from "@/lib/schema-generator";
 
 type Frontmatter = {
   title?: string;
@@ -62,6 +63,12 @@ export default function Home() {
 
   // Get services from frontmatter
   const services = frontmatter.services || [];
+
+  // Generate structured data for SEO
+  const structuredData = generatePageStructuredData({
+    includeLocalBusiness: true,
+    includeWebsite: true,
+  });
 
   return (
     <main className="parallax-bg min-h-screen flex items-center justify-center p-2 sm:p-6">
@@ -177,6 +184,10 @@ export default function Home() {
           </article>
         </CardContent>
       </Card>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: structuredData }}
+      />
     </main>
   );
 }

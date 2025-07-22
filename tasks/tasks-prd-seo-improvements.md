@@ -21,7 +21,7 @@
 
 ## Tasks
 
-- [ ] 1.0 Set up SEO Infrastructure and Utility Functions
+- [x] 1.0 Set up SEO Infrastructure and Utility Functions
 
   - [x] 1.1 Create `src/lib/business-data.ts` with centralized business information (name, location, contact info, services)
   - [x] 1.2 Create `src/lib/metadata.ts` with functions for generating page titles, meta descriptions, and keywords
@@ -48,12 +48,12 @@
 
 - [ ] 4.0 Add Structured Data for Local Business and Services
 
-  - [ ] 4.1 Implement local business JSON-LD schema with Montreal/Quebec location data
-  - [ ] 4.2 Add business contact information (phone, email, address) to structured data
-  - [ ] 4.3 Include geographic coordinates and service area radius in schema markup
-  - [ ] 4.4 Generate service offerings schema with prices, descriptions, and categories
-  - [ ] 4.5 Add structured data script tag to page component using schema generator
-  - [ ] 4.6 Mark up business as "LocalBusiness" with "HomeAndConstructionBusiness" subtype
+  - [x] 4.1 Implement local business JSON-LD schema with Montreal/Quebec location data
+  - [x] 4.2 Add business contact information (phone, email, address) to structured data
+  - [x] 4.3 Include geographic coordinates and service area radius in schema markup
+  - [x] 4.4 Generate service offerings schema with prices, descriptions, and categories
+  - [x] 4.5 Add structured data script tag to page component using schema generator
+  - [x] 4.6 Mark up business as "LocalBusiness" with "HomeAndConstructionBusiness" subtype
 
 - [ ] 5.0 Implement Image SEO Optimization
 
