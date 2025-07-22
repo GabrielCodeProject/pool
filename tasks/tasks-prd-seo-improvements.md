@@ -42,9 +42,9 @@
   - [x] 3.2 Remove static metadata from layout.tsx and add global head elements
   - [x] 3.3 Add `generateMetadata` function to `src/app/page.tsx` using metadata utilities
   - [x] 3.4 Implement Open Graph meta tags for social media sharing (Facebook/LinkedIn)
-  - [ ] 3.5 Implement Twitter Card metadata for Twitter sharing
-  - [ ] 3.6 Add canonical URLs and proper robots meta tags
-  - [ ] 3.7 Ensure all meta tags work with static site generation (output: "export")
+  - [x] 3.5 Implement Twitter Card metadata for Twitter sharing
+  - [x] 3.6 Add canonical URLs and proper robots meta tags
+  - [x] 3.7 Ensure all meta tags work with static site generation (output: "export")
 
 - [ ] 4.0 Add Structured Data for Local Business and Services
 

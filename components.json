@@ -17,5 +17,11 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "lucide",
+  "registries": [
+    {
+      "name": "default",
+      "url": "https://ui.shadcn.com/r"
+    }
+  ]
 }
