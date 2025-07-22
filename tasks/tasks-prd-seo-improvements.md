@@ -36,7 +36,7 @@
   - [x] 2.3 Update `content/pages/home.md` with sample SEO frontmatter data
   - [x] 2.4 Test CMS interface to ensure SEO fields display correctly and are optional
 
-- [ ] 3.0 Implement Dynamic Metadata Generation and Technical SEO
+- [x] 3.0 Implement Dynamic Metadata Generation and Technical SEO
 
   - [x] 3.1 Update `src/app/layout.tsx` to add global meta tags (viewport, theme-color, language declaration)
   - [x] 3.2 Remove static metadata from layout.tsx and add global head elements
