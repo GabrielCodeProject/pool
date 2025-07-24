@@ -86,7 +86,7 @@ export function ImageSeo({
         quality={quality}
         priority={priority}
         loading={priority ? undefined : loading}
-        style={{ height: "auto", ...style }}
+        style={{ width: "auto", height: "auto", ...style }}
         onLoad={onLoad}
         onError={onError}
       />
