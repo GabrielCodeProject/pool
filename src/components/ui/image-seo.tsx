@@ -104,6 +104,7 @@ export function ImageSeo({
       sizes={optimizedSizes}
       quality={quality}
       loading={loading}
+      priority={priority}
       style={style}
       onLoad={onLoad}
       onError={onError}

@@ -70,7 +70,7 @@ export default function Home() {
           <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-gradient-to-br from-blue-200/15 to-teal-200/15 rounded-full blur-2xl animate-pulse delay-2000"></div>
         </div>
 
-        <main className="relative z-10 min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+        <div className="relative z-10 min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 sm:p-6 lg:p-8">
           {/* Main Container with Modern Glass Effect */}
           <div className="w-full max-w-6xl mx-auto">
             <Card className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-0 shadow-2xl shadow-cyan-500/10 dark:shadow-cyan-400/5">
@@ -123,7 +123,7 @@ export default function Home() {
                 </div>
 
                 {/* Content section with modern styling */}
-                <div className="relative">
+                <div className="relative" id="contact">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-teal-50/30 dark:from-blue-950/20 dark:to-teal-950/20 rounded-2xl -m-4"></div>
                   <div className="relative">
                     <ContentSection content={content} />
@@ -141,7 +141,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </main>
+        </div>
       </div>
       
       <script
