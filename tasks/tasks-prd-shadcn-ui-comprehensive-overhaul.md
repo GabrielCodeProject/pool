@@ -1,0 +1,84 @@
+## Relevant Files
+
+- `src/components/ui/typography.tsx` - Contains the buggy H2 component that renders as h1, needs complete typography system overhaul
+- `src/components/ui/typography.test.tsx` - Unit tests for typography components
+- `src/components/ui/navigation-menu.tsx` - New NavigationMenu component for main site navigation
+- `src/components/ui/navigation-menu.test.tsx` - Unit tests for NavigationMenu component
+- `src/components/ui/breadcrumb.tsx` - New Breadcrumb component for page hierarchy
+- `src/components/ui/breadcrumb.test.tsx` - Unit tests for Breadcrumb component
+- `src/components/ui/tabs.tsx` - New Tabs component for content organization
+- `src/components/ui/tabs.test.tsx` - Unit tests for Tabs component
+- `src/components/ui/badge.tsx` - New Badge component for service categories and status
+- `src/components/ui/badge.test.tsx` - Unit tests for Badge component
+- `src/components/ui/avatar.tsx` - New Avatar component for team member profiles
+- `src/components/ui/avatar.test.tsx` - Unit tests for Avatar component
+- `src/components/ui/accordion.tsx` - New Accordion component for expandable content
+- `src/components/ui/accordion.test.tsx` - Unit tests for Accordion component
+- `src/components/ui/popover.tsx` - New Popover component for additional information displays
+- `src/components/ui/popover.test.tsx` - Unit tests for Popover component
+- `src/components/ui/select.tsx` - New Select component for service filtering
+- `src/components/ui/select.test.tsx` - Unit tests for Select component
+- `src/components/ui/checkbox.tsx` - New Checkbox component for preferences
+- `src/components/ui/checkbox.test.tsx` - Unit tests for Checkbox component
+- `src/components/ui/switch.tsx` - New Switch component for settings
+- `src/components/ui/switch.test.tsx` - Unit tests for Switch component
+- `src/components/ui/dialog.tsx` - New Dialog component for service detail modals
+- `src/components/ui/dialog.test.tsx` - Unit tests for Dialog component
+- `src/components/ui/button.tsx` - Existing Button component needs variant enhancements
+- `src/components/ui/skeleton.tsx` - Existing Skeleton component needs implementation integration
+- `src/app/page.tsx` - Main page component requiring comprehensive UI updates
+- `src/app/layout.tsx` - Layout component for navigation integration
+- `src/lib/design-tokens.ts` - New utility for design system standardization
+- `src/lib/design-tokens.test.ts` - Unit tests for design tokens utilities
+
+### Notes
+
+- Unit tests should typically be placed alongside the code files they are testing (e.g., `MyComponent.tsx` and `MyComponent.test.tsx` in the same directory).
+- Use `npm run test` or `npx jest [optional/path/to/test/file]` to run tests. Running without a path executes all tests found by the Jest configuration.
+- All new shadcn/ui components should be added using the MCP server: `jpisnice/shadcn-ui-mcp-server`
+- Follow the existing "new-york" style variant configuration in components.json
+
+## Tasks
+
+- [ ] 1.0 Fix Typography System and Core Component Issues
+  - [ ] 1.1 Fix TypographyH2 component to render as `h2` instead of `h1` element
+  - [ ] 1.2 Implement complete typography scale with H1-H6 heading hierarchy
+  - [ ] 1.3 Add typography variants for lead text, captions, and different content contexts
+  - [ ] 1.4 Ensure consistent line height and spacing ratios across all typography components
+  - [ ] 1.5 Create comprehensive unit tests for all typography components
+- [ ] 2.0 Implement Navigation and Organizational Components  
+  - [ ] 2.1 Add NavigationMenu component using shadcn/ui MCP server for main site navigation
+  - [ ] 2.2 Implement Breadcrumb component for page hierarchy indication
+  - [ ] 2.3 Create Tabs component for organizing service categories and content sections
+  - [ ] 2.4 Add mobile-responsive navigation patterns with collapsible menu functionality
+  - [ ] 2.5 Integrate navigation components into layout.tsx and page.tsx
+  - [ ] 2.6 Create unit tests for all navigation components
+- [ ] 3.0 Add Interactive Display and Form Components
+  - [ ] 3.1 Implement Badge components for service categories and status indicators
+  - [ ] 3.2 Add Avatar components for team member profiles and testimonials
+  - [ ] 3.3 Create Accordion components for FAQ sections and expandable service information
+  - [ ] 3.4 Implement Popover components for additional information displays and tooltips
+  - [ ] 3.5 Add Select components for service filtering and selection functionality
+  - [ ] 3.6 Implement Checkbox components for service preferences and options
+  - [ ] 3.7 Create Switch components for settings and preference toggles
+  - [ ] 3.8 Enhance existing Button component with additional variants (ghost, outline, destructive)
+  - [ ] 3.9 Create comprehensive unit tests for all interactive components
+- [ ] 4.0 Enhance Service Exploration with Advanced UI Patterns
+  - [ ] 4.1 Create tabbed interface for different service categories using Tabs component
+  - [ ] 4.2 Add filtering and sorting capabilities using Select components
+  - [ ] 4.3 Implement Dialog/Modal components for detailed service information views
+  - [ ] 4.4 Create service comparison interfaces for different service packages
+  - [ ] 4.5 Integrate Skeleton components for loading states during service data loading
+  - [ ] 4.6 Add proper error states and recovery patterns for service interactions
+  - [ ] 4.7 Implement feedback mechanisms for user interactions and form submissions
+- [ ] 5.0 Implement Design System Standards and Mobile Optimization
+  - [ ] 5.1 Create design tokens utility in lib/design-tokens.ts for consistent spacing system
+  - [ ] 5.2 Standardize color usage across all components following Tailwind design tokens
+  - [ ] 5.3 Create consistent component variants and sizing systems throughout the application
+  - [ ] 5.4 Establish animation and transition patterns for interactive elements
+  - [ ] 5.5 Optimize all components for mobile-first responsive design with proper breakpoints
+  - [ ] 5.6 Implement touch-friendly interaction patterns with minimum 44px touch targets
+  - [ ] 5.7 Add mobile-specific navigation and interaction patterns
+  - [ ] 5.8 Ensure WCAG 2.1 AA accessibility compliance across all new components
+  - [ ] 5.9 Test and validate all components across different screen sizes and devices
+  - [ ] 5.10 Run final design consistency audit and performance optimization
