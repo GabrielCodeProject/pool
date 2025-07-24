@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npm run build:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "mcp__shadcn-ui__list_components",
+      "mcp__shadcn-ui__list_blocks"
     ]
   },
   "enableAllProjectMcpServers": true,
