@@ -34,8 +34,7 @@ export function ImageSeo({
   fill = false,
   style,
   onLoad,
-  onError,
-  ...props
+  onError
 }: ImageSeoProps) {
   const businessName = getBusinessName();
   const serviceArea = getServiceArea();
@@ -85,11 +84,11 @@ export function ImageSeo({
         className={className}
         sizes={optimizedSizes}
         quality={quality}
-        loading={loading}
-        style={style}
+        priority={priority}
+        loading={priority ? undefined : loading}
+        style={{ height: "auto", ...style }}
         onLoad={onLoad}
         onError={onError}
-        {...props}
       />
     );
   }
@@ -103,12 +102,11 @@ export function ImageSeo({
       className={className}
       sizes={optimizedSizes}
       quality={quality}
-      loading={loading}
       priority={priority}
-      style={style}
+      loading={priority ? undefined : loading}
+      style={{ height: "auto", ...style }}
       onLoad={onLoad}
       onError={onError}
-      {...props}
     />
   );
 }
