@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { getBusinessName, getServiceArea } from "@/lib/business-data";
+import Image from "next/image";
 
 interface ImageSeoProps {
   src: string;
@@ -85,7 +85,6 @@ export function ImageSeo({
         className={className}
         sizes={optimizedSizes}
         quality={quality}
-        priority={priority}
         loading={loading}
         style={style}
         onLoad={onLoad}
@@ -104,7 +103,6 @@ export function ImageSeo({
       className={className}
       sizes={optimizedSizes}
       quality={quality}
-      priority={priority}
       loading={loading}
       style={style}
       onLoad={onLoad}
