@@ -1,0 +1,10 @@
+{
+    "mcpServers": {
+      "shadcn-ui": {
+        "name": "Shadcn UI MCP Server",
+        "description": "A server for managing Shadcn UI components",
+        "command": "cm /c -- npx",
+        "args": ["@jpisnice/shadcn-ui-mcp-server"]
+      }
+    }
+}

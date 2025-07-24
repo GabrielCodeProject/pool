@@ -1,24 +1,14 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import ReactMarkdown from "react-markdown";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import {
-  TypographyH1,
-  TypographyH2,
-  TypographyP,
-} from "@/components/ui/typography";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { TypographyH1, TypographyP } from "@/components/ui/typography";
 import { generateMetadata as generateMetadataUtil } from "@/lib/metadata";
 import { generatePageStructuredData } from "@/lib/schema-generator";
-import { BusinessLogoImage, PromotionImage } from "@/components/ui/image-seo";
+import { BusinessLogoImage } from "@/components/ui/image-seo";
+import { PromotionsSection } from "@/components/ui/promotions-section";
+import { ServicesSection } from "@/components/ui/services-section";
+import { ContentSection } from "@/components/ui/content-section";
 
 type Frontmatter = {
   title?: string;
@@ -39,29 +29,28 @@ type Frontmatter = {
   };
 };
 
-// Generate metadata for this page using our SEO utilities
-export async function generateMetadata() {
-  // Read markdown file to get frontmatter data
+// Utility function to read and parse home page content
+function getHomePageData() {
   const filePath = path.join(process.cwd(), "content/pages/home.md");
   const fileContent = fs.readFileSync(filePath, "utf-8");
-  const { data } = matter(fileContent);
-  const frontmatter = data as Frontmatter;
+  return matter(fileContent);
+}
 
-  // Use our metadata utility to generate complete metadata
+// Generate metadata for this page using our SEO utilities
+export async function generateMetadata() {
+  const { data } = getHomePageData();
+  const frontmatter = data as Frontmatter;
   return generateMetadataUtil(frontmatter);
 }
 
+
 export default function Home() {
   // Read markdown at build time
-  const filePath = path.join(process.cwd(), "content/pages/home.md");
-  const fileContent = fs.readFileSync(filePath, "utf-8");
-  const { content, data } = matter(fileContent);
+  const { content, data } = getHomePageData();
   const frontmatter = data as Frontmatter;
 
-  // Get promotions from frontmatter
+  // Get promotions and services from frontmatter
   const promotions = frontmatter.promotions || [];
-
-  // Get services from frontmatter
   const services = frontmatter.services || [];
 
   // Generate structured data for SEO
@@ -71,119 +60,94 @@ export default function Home() {
   });
 
   return (
-    <main className="parallax-bg min-h-screen flex items-center justify-center p-2 sm:p-6">
-      <Card className="w-full max-w-lg sm:max-w-2xl md:max-w-3xl bg-white/50 dark:bg-gray-900/50 shadow-lg backdrop-blur-md rounded-lg sm:rounded-xl mx-auto">
-        <CardHeader>
-          <TypographyH1 className="mb-2 text-center text-2xl sm:text-3xl md:text-4xl">
-            {frontmatter.title || "Home"}
-            <div className="flex justify-center">
-              <BusinessLogoImage
-                src="/pool/images/uploads/logo.jpg"
-                width={150}
-                height={100}
-              />
-            </div>
-          </TypographyH1>
-          {frontmatter.description && (
-            <TypographyP className="mb-4 text-gray-600 dark:text-gray-300 text-center text-base sm:text-lg">
-              {frontmatter.description}
-            </TypographyP>
-          )}
-        </CardHeader>
-        <Separator />
-        <CardContent>
-          {/* Promotions Carousel Section */}
-          {promotions.length > 0 && (
-            <section className="mb-8">
-              <TypographyH1 className="text-xl sm:text-2xl mb-4 text-center">
-                Promotions
-              </TypographyH1>
-              <Carousel className="w-full max-w-xs sm:max-w-lg md:max-w-2xl mx-auto">
-                <CarouselContent>
-                  {promotions.map((promo, idx) => (
-                    <CarouselItem
-                      key={idx}
-                      className="flex flex-col items-center justify-center"
-                    >
-                      <PromotionImage
-                        src={promo.image}
-                        alt={promo.text}
-                        width={350}
+    <>
+      {/* Modern Pool-Inspired Background */}
+      <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 dark:from-slate-900 dark:via-blue-950 dark:to-cyan-950">
+        {/* Floating geometric elements for depth */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-cyan-200/20 to-blue-300/20 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-teal-200/20 to-cyan-300/20 rounded-full blur-lg animate-pulse delay-1000"></div>
+          <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-gradient-to-br from-blue-200/15 to-teal-200/15 rounded-full blur-2xl animate-pulse delay-2000"></div>
+        </div>
+
+        <main className="relative z-10 min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+          {/* Main Container with Modern Glass Effect */}
+          <div className="w-full max-w-6xl mx-auto">
+            <Card className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-0 shadow-2xl shadow-cyan-500/10 dark:shadow-cyan-400/5">
+              {/* Hero Section */}
+              <CardHeader className="text-center space-y-8 p-8 sm:p-12 lg:p-16 bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-slate-800/50 rounded-t-xl">
+                <div className="space-y-6">
+                  {/* Logo with enhanced styling */}
+                  <div className="flex justify-center mb-6">
+                    <div className="relative group">
+                      <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+                      <BusinessLogoImage
+                        src="/pool/images/uploads/logo.jpg"
+                        width={180}
                         height={120}
+                        alt="Business logo"
+                        className="relative rounded-xl shadow-xl border-2 border-white/50 dark:border-slate-700/50"
                       />
-                      <div className="text-lg sm:text-xl font-bold text-center">
-                        {promo.text}
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            </section>
-          )}
+                    </div>
+                  </div>
+                  
+                  {/* Title with gradient text */}
+                  <TypographyH1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-cyan-600 via-blue-600 to-teal-600 dark:from-cyan-400 dark:via-blue-400 dark:to-teal-400 bg-clip-text text-transparent leading-tight">
+                    {frontmatter.title || "Home"}
+                  </TypographyH1>
+                </div>
+                
+                {frontmatter.description && (
+                  <TypographyP className="text-slate-600 dark:text-slate-300 text-lg sm:text-xl lg:text-2xl leading-relaxed max-w-4xl mx-auto font-light">
+                    {frontmatter.description}
+                  </TypographyP>
+                )}
+              </CardHeader>
+              
+              {/* Content Sections with Enhanced Spacing */}
+              <CardContent className="p-8 sm:p-12 lg:p-16 space-y-16">
+                {/* Promotions with modern styling */}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/30 dark:to-blue-950/30 rounded-2xl -m-4"></div>
+                  <div className="relative">
+                    <PromotionsSection promotions={promotions} />
+                  </div>
+                </div>
 
-          {/* Services Section */}
-          {services.length > 0 && (
-            <section className="mb-8">
-              <TypographyH1 className="text-xl sm:text-2xl mb-4 text-center">
-                Nos services
-              </TypographyH1>
-              <div className="grid gap-4">
-                {services.map((service, idx) => (
-                  <Card key={idx} className="border shadow-sm">
-                    <CardHeader>
-                      <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
-                        <span className="font-bold text-base sm:text-lg">
-                          {service.name}
-                        </span>
-                        <span className="text-primary font-semibold text-base sm:text-lg">
-                          {service.price}
-                        </span>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <TypographyP className="text-sm sm:text-base">
-                        {service.description}
-                      </TypographyP>
-                    </CardContent>
-                  </Card>
-                ))}
+                {/* Services with enhanced container */}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-teal-50/50 to-cyan-50/50 dark:from-teal-950/30 dark:to-cyan-950/30 rounded-2xl -m-4"></div>
+                  <div className="relative">
+                    <ServicesSection services={services} />
+                  </div>
+                </div>
+
+                {/* Content section with modern styling */}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 to-teal-50/30 dark:from-blue-950/20 dark:to-teal-950/20 rounded-2xl -m-4"></div>
+                  <div className="relative">
+                    <ContentSection content={content} />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Floating Action Elements */}
+            <div className="flex justify-center mt-8">
+              <div className="flex space-x-4">
+                <div className="w-3 h-3 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full animate-pulse"></div>
+                <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full animate-pulse delay-300"></div>
+                <div className="w-3 h-3 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full animate-pulse delay-700"></div>
               </div>
-            </section>
-          )}
-
-          <article className="prose prose-sm sm:prose-lg dark:prose-invert max-w-none">
-            <ReactMarkdown
-              components={{
-                h1: (props) => (
-                  <TypographyH1 {...props} className="mb-4 text-center" />
-                ),
-                h2: (props) => (
-                  <TypographyH2 {...props} className="mb-3 text-center" />
-                ),
-                p: (props) => <TypographyP {...props} className="mb-2" />,
-                ul: (props) => (
-                  <ul {...props} className="list-disc pl-6 mb-2" />
-                ),
-                ol: (props) => (
-                  <ol {...props} className="list-decimal pl-6 mb-2" />
-                ),
-                li: (props) => <li {...props} className="mb-1" />,
-                a: (props) => (
-                  <a {...props} className="text-primary underline" />
-                ),
-              }}
-            >
-              {content}
-            </ReactMarkdown>
-          </article>
-        </CardContent>
-      </Card>
+            </div>
+          </div>
+        </main>
+      </div>
+      
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: structuredData }}
       />
-    </main>
+    </>
   );
 }

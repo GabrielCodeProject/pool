@@ -83,9 +83,9 @@ export function ImageSeo({
         alt={optimizedAlt}
         fill
         className={className}
-        priority={priority}
         sizes={optimizedSizes}
         quality={quality}
+        priority={priority}
         loading={loading}
         style={style}
         onLoad={onLoad}
@@ -102,9 +102,9 @@ export function ImageSeo({
       width={width}
       height={height}
       className={className}
-      priority={priority}
       sizes={optimizedSizes}
       quality={quality}
+      priority={priority}
       loading={loading}
       style={style}
       onLoad={onLoad}
