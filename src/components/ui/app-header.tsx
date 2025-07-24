@@ -1,8 +1,24 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { BusinessLogoImage } from "./image-seo"
-import { BUSINESS_INFO } from "@/lib/business-data"
+import { BUSINESS_INFO } from "@/lib/business-data";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "./breadcrumb";
+import { BusinessLogoImage } from "./image-seo";
+import {
+  MobileNavigation,
+  MobileNavItem,
+  MobileNavSection,
+  MobileNavSeparator,
+  ResponsiveNavigation,
+} from "./mobile-navigation";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,38 +27,22 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "./navigation-menu"
-import {
-  MobileNavigation,
-  MobileNavItem,
-  MobileNavSection,
-  MobileNavSeparator,
-  ResponsiveNavigation,
-} from "./mobile-navigation"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "./breadcrumb"
-import { cn } from "@/lib/utils"
+} from "./navigation-menu";
 
 interface AppHeaderProps {
-  className?: string
-  showBreadcrumbs?: boolean
+  className?: string;
+  showBreadcrumbs?: boolean;
   breadcrumbs?: Array<{
-    href?: string
-    label: string
-    current?: boolean
-  }>
+    href?: string;
+    label: string;
+    current?: boolean;
+  }>;
 }
 
-export function AppHeader({ 
-  className, 
-  showBreadcrumbs = false, 
-  breadcrumbs = [] 
+export function AppHeader({
+  className,
+  showBreadcrumbs = false,
+  breadcrumbs = [],
 }: AppHeaderProps) {
   // Desktop Navigation Menu
   const desktopNav = (
@@ -50,10 +50,10 @@ export function AppHeader({
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <Link href="/pool/">Accueil</Link>
+            <Link href="/">Accueil</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
-        
+
         <NavigationMenuItem>
           <NavigationMenuTrigger>Nos Services</NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -62,7 +62,7 @@ export function AppHeader({
                 <li key={service.id} className="row-span-1">
                   <NavigationMenuLink asChild>
                     <Link
-                      href={`/pool/#service-${service.id}`}
+                      href={`/#service-${service.id}`}
                       className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                     >
                       <div className="text-sm font-medium leading-none">
@@ -72,7 +72,8 @@ export function AppHeader({
                         {service.description}
                       </p>
                       <div className="text-sm font-semibold text-primary">
-                        À partir de ${service.price.amount} {service.price.currency}
+                        À partir de ${service.price.amount}{" "}
+                        {service.price.currency}
                       </div>
                     </Link>
                   </NavigationMenuLink>
@@ -83,58 +84,21 @@ export function AppHeader({
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Zone de Service</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[300px] gap-3 p-4">
-              <li className="row-span-1">
-                <NavigationMenuLink asChild>
-                  <Link
-                    href="/pool/"
-                    className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                  >
-                    <div className="text-sm font-medium leading-none">
-                      {BUSINESS_INFO.serviceArea.primary}
-                    </div>
-                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                      Service dans un rayon de {BUSINESS_INFO.serviceArea.radius}km
-                    </p>
-                  </Link>
-                </NavigationMenuLink>
-              </li>
-              {BUSINESS_INFO.serviceArea.regions.map((region) => (
-                <li key={region}>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href="/pool/"
-                      className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                    >
-                      <div className="text-sm leading-none">{region}</div>
-                    </Link>
-                  </NavigationMenuLink>
-                </li>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <Link href="/pool/#contact">Contact</Link>
+            <Link href="/#contact">Contact</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 
-  // Mobile Navigation Menu  
+  // Mobile Navigation Menu
   const mobileNav = (
     <MobileNavigation>
-      <MobileNavItem href="/pool/">
-        Accueil
-      </MobileNavItem>
-      
+      <MobileNavItem href="/">Accueil</MobileNavItem>
+
       <MobileNavSeparator />
-      
+
       <MobileNavSection title="Nos Services" defaultOpen>
         {BUSINESS_INFO.services.map((service) => (
           <MobileNavItem key={service.id} href={`/pool/#service-${service.id}`}>
@@ -147,38 +111,23 @@ export function AppHeader({
           </MobileNavItem>
         ))}
       </MobileNavSection>
-      
+
       <MobileNavSeparator />
-      
-      <MobileNavSection title="Zone de Service">
-        <MobileNavItem href="/pool/">
-          <div className="flex flex-col gap-1">
-            <span className="font-medium">{BUSINESS_INFO.serviceArea.primary}</span>
-            <span className="text-xs text-muted-foreground">
-              Rayon de {BUSINESS_INFO.serviceArea.radius}km
-            </span>
-          </div>
-        </MobileNavItem>
-        {BUSINESS_INFO.serviceArea.regions.map((region) => (
-          <MobileNavItem key={region} href="/pool/">
-            {region}
-          </MobileNavItem>
-        ))}
-      </MobileNavSection>
-      
-      <MobileNavSeparator />
-      
-      <MobileNavItem href="/pool/#contact">
-        Contact
-      </MobileNavItem>
+
+      <MobileNavItem href="/#contact">Contact</MobileNavItem>
     </MobileNavigation>
-  )
+  );
 
   return (
-    <header className={cn("sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60", className)}>
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+        className
+      )}
+    >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/pool/" className="flex items-center space-x-3">
+        <Link href="/" className="flex items-center space-x-3">
           <BusinessLogoImage
             src={BUSINESS_INFO.branding.logo}
             alt={`${BUSINESS_INFO.name} logo`}
@@ -190,10 +139,7 @@ export function AppHeader({
         </Link>
 
         {/* Navigation */}
-        <ResponsiveNavigation
-          desktopNav={desktopNav}
-          mobileNav={mobileNav}
-        />
+        <ResponsiveNavigation desktopNav={desktopNav} mobileNav={mobileNav} />
       </div>
 
       {/* Breadcrumbs */}
@@ -210,7 +156,9 @@ export function AppHeader({
                         <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
                       ) : (
                         <BreadcrumbLink asChild>
-                          <Link href={crumb.href || "/pool/"}>{crumb.label}</Link>
+                          <Link href={crumb.href || "/pool/"}>
+                            {crumb.label}
+                          </Link>
                         </BreadcrumbLink>
                       )}
                     </BreadcrumbItem>
@@ -222,5 +170,5 @@ export function AppHeader({
         </div>
       )}
     </header>
-  )
+  );
 }
