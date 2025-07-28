@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { getBusinessName, getServiceArea } from "@/lib/business-data";
+import Image from "next/image";
 
 interface ImageSeoProps {
   src: string;
@@ -34,8 +34,7 @@ export function ImageSeo({
   fill = false,
   style,
   onLoad,
-  onError,
-  ...props
+  onError
 }: ImageSeoProps) {
   const businessName = getBusinessName();
   const serviceArea = getServiceArea();
@@ -86,11 +85,10 @@ export function ImageSeo({
         sizes={optimizedSizes}
         quality={quality}
         priority={priority}
-        loading={loading}
-        style={style}
+        loading={priority ? undefined : loading}
+        style={{ width: "auto", height: "auto", ...style }}
         onLoad={onLoad}
         onError={onError}
-        {...props}
       />
     );
   }
@@ -105,11 +103,10 @@ export function ImageSeo({
       sizes={optimizedSizes}
       quality={quality}
       priority={priority}
-      loading={loading}
-      style={style}
+      loading={priority ? undefined : loading}
+      style={{ height: "auto", ...style }}
       onLoad={onLoad}
       onError={onError}
-      {...props}
     />
   );
 }

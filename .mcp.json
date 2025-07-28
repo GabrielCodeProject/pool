@@ -6,4 +6,5 @@
         "args": ["/c", "npx", "@jpisnice/shadcn-ui-mcp-server"]
       }
     }
+  }
 }
